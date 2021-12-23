@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  aldra-db:
+    container_name: aldra-db
+    hostname: aldra-db
+    build:
+      context: docker/postgresql
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: BX3R7blD2UiPiM9F
+      POSTGRES_DB: aldra_dev
+      TZ: "Asia/Tokyo"
+    ports:
+      - "5432:5432"
+    volumes:
+      - aldra-db-data:/var/lib/postgresql/data
+    networks:
+      - aldra
+
+volumes:
+  aldra-db-data:
+    name: aldra-db-data
+    driver: local
+
+networks:
+  aldra:
+    name: aldra

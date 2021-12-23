@@ -1,0 +1,38 @@
+# OS
+.DS_Store
+
+# Gradle
+.gradle
+
+# IDE
+.idea
+*.iws
+*.iml
+*.ipr
+out
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.project
+.classpath
+.settings/
+bin/
+
+# Java files
+*.class
+
+# Log files
+*.log
+
+# JavaScript libraries
+node_modules
+
+# Build directory
+build/
+dist/
+
+# Ignore Gradle build output directory
+build
