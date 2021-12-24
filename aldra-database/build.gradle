@@ -1,0 +1,84 @@
+plugins {
+    id('java-library')
+    id('com.diffplug.spotless').version('6.0.5')
+    id('org.flywaydb.flyway').version('8.3.0')
+}
+
+configurations {
+    mbGenerate
+}
+
+dependencies {
+    api('org.postgresql:postgresql:42.3.1')
+    api('org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0')
+    compileOnly('org.projectlombok:lombok:1.18.22')
+    annotationProcessor('org.projectlombok:lombok:1.18.22')
+
+    mbGenerate('org.postgresql:postgresql:42.3.1')
+    mbGenerate('org.mybatis.generator:mybatis-generator-core:1.4.0')
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test:2.6.2')
+}
+
+java {
+    sourceCompatibility(JavaVersion.VERSION_11)
+    targetCompatibility(JavaVersion.VERSION_11)
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', "${buildDir}/mybatis/gen-src/main/java"]
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding('UTF-8')
+}
+
+spotless {
+    encoding('UTF-8')
+    java {
+        indentWithSpaces()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+        eclipse().configFile("${rootDir}/gradle/config/formatter.xml")
+    }
+}
+
+flyway {
+    driver = System.getenv("DB_JDBC_DRIVER")
+    url = System.getenv("DB_JDBC_URL")
+    user = System.getenv("DB_USER")
+    password = System.getenv("DB_PASSWORD")
+    locations = ["filesystem:${projectDir.path}/migrations"]
+}
+
+task mbGenerate() {
+    doFirst {
+        mkdir("${buildDir}/mybatis/gen-src/main/java")
+    }
+    doLast {
+        ant.properties['driverClassName'] = System.getenv("DB_JDBC_DRIVER")
+        ant.properties['url'] = System.getenv("DB_JDBC_URL")
+        ant.properties['username'] = System.getenv("DB_USER")
+        ant.properties['password'] = System.getenv("DB_PASSWORD")
+        ant.properties['targetProject'] = buildDir.path + '/mybatis/gen-src/main/java'
+        ant.properties['targetEntityPackage'] = 'aldra.database.domain.entity'
+        ant.properties['targetMapperPackage'] = 'aldra.database.domain.repository'
+        ant.taskdef(name: 'mbGenerator', classname: 'org.mybatis.generator.ant.GeneratorAntTask', classpath: configurations.mbGenerate.asPath)
+        ant.mbGenerator(overwrite: true, configFile: "${projectDir.path}/config/generator-config.xml", verbose: true) {
+            propertyset {
+                propertyref(name: 'driverClassName')
+                propertyref(name: 'url')
+                propertyref(name: 'username')
+                propertyref(name: 'password')
+                propertyref(name: 'targetProject')
+                propertyref(name: 'targetEntityPackage')
+                propertyref(name: 'targetMapperPackage')
+            }
+        }
+    }
+}

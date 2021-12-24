@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    driver-class-name: ${DB_JDBC_DRIVER}
+    pool-name: aldra-connection-pool
+    maximum-pool-size: 10
+    minimum-idle: 10
+    idle-timout: 600000 # 10min
+    connection-timeout: 20000 # 20sec
+    leak-connection-threshold: 10000
+    url: ${DB_JDBC_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+mybatis:
+  mapper-locations: classpath:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
+
+# ---
+# spring:
+#   config:
+#     activate:
+#       on-profile:
+#         - dev
+#         - ut
+#   datasource:
+#     driver-class-name: org.postgresql.Driver
+#     username: app
+#     password: BX3R7blD2UiPiM9F
+#     url: jdbc:postgresql://127.0.0.1:5432/aldra_dev

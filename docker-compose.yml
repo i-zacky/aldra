@@ -7,9 +7,9 @@ services:
     build:
       context: docker/postgresql
     environment:
-      POSTGRES_USER: app
-      POSTGRES_PASSWORD: BX3R7blD2UiPiM9F
-      POSTGRES_DB: aldra_dev
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
       TZ: "Asia/Tokyo"
     ports:
       - "5432:5432"
