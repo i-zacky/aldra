@@ -45,5 +45,38 @@
             enableCountByExample="false"
             enableUpdateByExample="false"
         />
+        <table
+            tableName="fixed_clock"
+            domainObjectName="system.gen.FixedClock"
+            mapperName="system.gen.FixedClockMapperDefault"
+            sqlProviderName="system.gen.FixedClockSqlProviderDefault"
+            modelType="flat"
+            enableSelectByExample="false"
+            enableDeleteByExample="false"
+            enableCountByExample="false"
+            enableUpdateByExample="false"
+        />
+        <table
+            tableName="staff"
+            domainObjectName="user.gen.Staff"
+            mapperName="user.gen.StaffMapperDefault"
+            sqlProviderName="user.gen.StaffClockSqlProviderDefault"
+            modelType="flat"
+            enableSelectByExample="false"
+            enableDeleteByExample="false"
+            enableCountByExample="false"
+            enableUpdateByExample="false"
+        />
+        <table
+            tableName="role"
+            domainObjectName="user.gen.Role"
+            mapperName="user.gen.RoleMapperDefault"
+            sqlProviderName="user.gen.RoleClockSqlProviderDefault"
+            modelType="flat"
+            enableSelectByExample="false"
+            enableDeleteByExample="false"
+            enableCountByExample="false"
+            enableUpdateByExample="false"
+        />
     </context>
 </generatorConfiguration>
