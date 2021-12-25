@@ -21,7 +21,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
     "aldra.database", //
 })
 @EnableAsync
-@Import({DataSourceSettings.class, //
+@Import({ //
+    DataSourceSettings.class, //
 })
 public class ServerConfiguration {
 

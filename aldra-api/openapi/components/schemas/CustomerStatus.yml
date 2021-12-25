@@ -1,0 +1,12 @@
+type: string
+nullable: true
+enum:
+  - UNAUTHORIZED
+  - UNREGISTERED
+  - PROVISIONAL
+  - REGISTERING
+  - APPLYING
+  - REGULAR
+  - RETIRED
+  - REJECTED
+example: UNAUTHORIZED

@@ -2,12 +2,15 @@ plugins {
     id('application')
     id('org.springframework.boot').version('2.6.2')
     id('com.diffplug.spotless').version('6.0.5')
-    id('org.openapi.generator').version('5.3.0')
+    id('org.openapi.generator').version('5.3.1')
 }
 
 dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web:2.6.2')
     implementation('org.springframework.boot:spring-boot-starter-actuator:2.6.2')
+    // FIXME remove below dependencies
+    // https://github.com/OpenAPITools/openapi-generator/issues/8719#issuecomment-806049990
+    implementation('org.springdoc:springdoc-openapi-ui:1.6.3')
     // implementation('org.springframework.boot:spring-boot-starter-security:2.6.2')
     compileOnly('org.projectlombok:lombok:1.18.22')
     annotationProcessor('org.projectlombok:lombok:1.18.22')
@@ -43,4 +46,35 @@ spotless {
         endWithNewline()
         eclipse().configFile("${rootDir}/gradle/config/formatter.xml")
     }
+}
+
+// see. https://openapi-generator.tech/docs/plugins#gradle
+task oaGenerate(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    generatorName = 'spring'
+    inputSpec = "${projectDir}/openapi/index.yml"
+    outputDir = "${buildDir}/openapi"
+    typeMappings = [
+        "string+local-date": "LocalDate",
+        "string+local-datetime" : "LocalDateTime"
+    ]
+    importMappings = [
+        "LocalDate": "java.time.LocalDate",
+        "LocalDateTime": "java.time.LocalDateTime"
+    ]
+    configOptions = [
+        "hideGenerationTimestamp": "true",
+        "sourceFolder": "gen-src/main/java",
+        "basePackage": "aldra.api",
+        "apiPackage": "aldra.api.adapter.web.controller",
+        "modelPackage": "aldra.api.adapter.web.dto",
+        "skipDefaultInterface": "true",
+        "oas3": "true",
+        "dateLibrary": "java8",
+        "delegatePattern": "false",
+        "interfaceOnly": "true",
+        "openApiNullable": "false",
+        "useTags": "true",
+        "disallowAdditionalPropertiesIfNotPresent": "false",
+        "useBeanValidation": "false",
+    ]
 }

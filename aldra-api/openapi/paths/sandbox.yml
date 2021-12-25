@@ -1,0 +1,32 @@
+get:
+  summary: Sandbox一覧取得API
+  description: Sandboxデータの一覧を取得します
+  operationId: execute
+  tags:
+    - GetSandbox
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/GetSandboxResponse.yml"
+
+post:
+  summary: Sandbox作成API
+  description: Sandboxデータを1件作成します
+  operationId: execute
+  tags:
+    - CreateSandbox
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../components/schemas/CreateSandboxRequest.yml"
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/CreateSandboxResponse.yml"
