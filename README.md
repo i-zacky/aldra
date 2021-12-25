@@ -19,3 +19,11 @@ Common implementations for aldra-api / aldra-batch
 ### aldra-database
 
 Database implementation (use MyBatis)
+
+## Requirements
+
+### System / Tools
+
+- Java11
+- Docker
+- direnv
