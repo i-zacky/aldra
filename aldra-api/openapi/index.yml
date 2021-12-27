@@ -23,5 +23,7 @@ components:
       bearerFormat: JWT
 
 paths:
-  /api/v1/sandbox:
+  /api/v1/public/sandbox:
     $ref: "./paths/sandbox.yml"
+  /api/v1/protected/staff:
+    $ref: "./paths/staff.yml"

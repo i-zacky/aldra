@@ -1,6 +1,6 @@
 get:
-  summary: Sandbox一覧取得API
-  description: Sandboxデータの一覧を取得します
+  summary: list sandbox
+  description: get a list of sandbox
   operationId: execute
   tags:
     - GetSandbox
@@ -13,8 +13,8 @@ get:
             $ref: "../components/schemas/GetSandboxResponse.yml"
 
 post:
-  summary: Sandbox作成API
-  description: Sandboxデータを1件作成します
+  summary: create sandbox
+  description: create a sandbox
   operationId: execute
   tags:
     - CreateSandbox

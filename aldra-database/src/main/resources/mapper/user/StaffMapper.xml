@@ -2,4 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="aldra.database.domain.repository.user.StaffMapper">
+    <insert id="insertOne"
+            useGeneratedKeys="true"
+            parameterType="aldra.database.domain.entity.user.gen.Staff"
+    >
+        INSERT INTO staff (
+            name,
+            role_id
+        ) VALUES (
+            #{entity.name},
+            #{entity.roleId}
+        )
+    </insert>
 </mapper>

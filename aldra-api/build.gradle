@@ -8,10 +8,10 @@ plugins {
 dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web:2.6.2')
     implementation('org.springframework.boot:spring-boot-starter-actuator:2.6.2')
+    implementation('org.springframework.boot:spring-boot-starter-security:2.6.2')
     // FIXME remove below dependencies
     // https://github.com/OpenAPITools/openapi-generator/issues/8719#issuecomment-806049990
     implementation('org.springdoc:springdoc-openapi-ui:1.6.3')
-    // implementation('org.springframework.boot:spring-boot-starter-security:2.6.2')
     compileOnly('org.projectlombok:lombok:1.18.22')
     annotationProcessor('org.projectlombok:lombok:1.18.22')
     implementation(project(':aldra-common'))

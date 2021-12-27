@@ -1,0 +1,18 @@
+post:
+  summary: create staff
+  description: create a staff
+  operationId: execute
+  tags:
+    - CreateStaff
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../components/schemas/CreateStaffRequest.yml"
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/CreateStaffResponse.yml"

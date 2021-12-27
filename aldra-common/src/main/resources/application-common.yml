@@ -1,0 +1,15 @@
+aws:
+  default-region: ${AWS_DEFAULT_REGION}
+  access-key-id: ${AWS_ACCESS_KEY_ID}
+  secret-access-key: ${AWS_SECRET_ACCESS_KEY}
+  s3:
+    endpoint-url: ${S3_ENDPOINT_URL}
+    region: ${aws.default-region}
+    data-bucket: ${S3_DATA_BUCKET}
+    expiration-seconds: 60
+  cognito:
+    region: ${aws.default-region}
+    pool-id: ${COGNITO_USER_POOL_ID}
+    client-id: ${COGNITO_CLIENT_ID}
+    issuer: https://cognito-idp.${aws.cognito.region}.amazonaws.com/${aws.cognito.pool-id}
+    jwk-url: https://cognito-idp.${aws.cognito.region}.amazonaws.com/${aws.cognito.pool-id}/.well-known/jwks.json

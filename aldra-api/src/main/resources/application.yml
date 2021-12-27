@@ -5,15 +5,17 @@ spring:
     import:
       - classpath:application-common.yml
       - classpath:application-database.yml
-  # mvc:
-  #   pathmatch:
-  #     matching-strategy: ant_path_matcher
 
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-# springdoc:
-#   api-docs:
-#     enabled: false
-#   swagger-ui:
-#     enabled: false
+# for dev / ut
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - dev
+        - ut
+
+cors:
+  allow-origins:
+    - http://127.0.0.1:3000
+    - http://localhost:3000
