@@ -30,6 +30,7 @@ import javax.servlet.Filter;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
+import static aldra.api.ServerConfiguration.VERSION;
 
 @Configuration
 @RequiredArgsConstructor
@@ -75,8 +76,8 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //
             .and() //
             .authorizeRequests() //
-            .antMatchers("/api/v1/public/**").permitAll() //
-            .antMatchers("/api/v1/protected/**").authenticated() //
+            .antMatchers(VERSION + "/public/**").permitAll() //
+            .antMatchers(VERSION + "/protected/**").authenticated() //
             .and() //
             .exceptionHandling().accessDeniedHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_FORBIDDEN)) //
             .and() //
@@ -91,13 +92,13 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
     config.setAllowedHeaders(List.of("*"));
 
     val source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/api/v1/**", config);
+    source.registerCorsConfiguration(VERSION + "/**", config);
     return source;
   }
 
   @SneakyThrows
   private Filter cognitoAuthenticationFilter() {
-    val filter = new CognitoAuthenticationFilter("/api/v1/public/login", "POST");
+    val filter = new CognitoAuthenticationFilter(VERSION + "/public/login", "POST");
     filter.setAuthenticationManager(authenticationManager());
     filter.setAuthenticationSuccessHandler(new CognitoAuthenticationSuccessHandler());
     filter.setAuthenticationFailureHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED));
@@ -106,7 +107,7 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
 
   @SneakyThrows
   private Filter jwtAuthorizationFilter() {
-    val filter = new JWTAuthorizationFilter("/api/v1/protected/**");
+    val filter = new JWTAuthorizationFilter(VERSION + "/protected/**");
     filter.setAuthenticationManager(authenticationManager());
     filter.setAuthenticationSuccessHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_OK));
     filter.setAuthenticationFailureHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED));
