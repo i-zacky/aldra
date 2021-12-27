@@ -8,13 +8,16 @@ import aldra.api.framework.auth.JWTAuthorizationFilter;
 import aldra.api.framework.auth.JWTAuthorizationUserDetailsService;
 import aldra.common.settings.AWSSettings;
 import aldra.common.utils.CognitoHelper;
+import aldra.database.domain.repository.user.AuthorityMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -30,6 +33,11 @@ import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity
+@EnableGlobalMethodSecurity( //
+  prePostEnabled = true, //
+  securedEnabled = true //
+)
 public class SecuritySettings extends WebSecurityConfigurerAdapter {
 
   private final CORSProperties corsProperties;
@@ -37,6 +45,8 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
   private final AWSSettings awsSettings;
 
   private final CognitoHelper cognitoHelper;
+
+  private final AuthorityMapper authorityMapper;
 
   @Override
   public void configure(WebSecurity web) {
@@ -48,7 +58,7 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
   protected void configure(AuthenticationManagerBuilder auth) {
     // for protected endpoint
     val preAuthProvider = new PreAuthenticatedAuthenticationProvider();
-    preAuthProvider.setPreAuthenticatedUserDetailsService(new JWTAuthorizationUserDetailsService(awsSettings));
+    preAuthProvider.setPreAuthenticatedUserDetailsService(new JWTAuthorizationUserDetailsService(awsSettings, authorityMapper));
     auth.authenticationProvider(preAuthProvider);
     // for authentication endpoint
     val authenticationProvider = new CognitoAuthenticationProvider(cognitoHelper);

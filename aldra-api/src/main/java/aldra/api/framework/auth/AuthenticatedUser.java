@@ -1,10 +1,13 @@
 package aldra.api.framework.auth;
 
 import aldra.database.domain.entity.user.gen.Staff;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldDefaults;
 import lombok.val;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,26 +15,34 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @Accessors(chain = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthenticatedUser extends Staff implements UserDetails {
 
-  private boolean accountNonExpired;
+  boolean accountNonExpired;
 
-  private boolean accountNonLocked;
+  boolean accountNonLocked;
 
-  private boolean credentialsNonExpired;
+  boolean credentialsNonExpired;
 
-  private boolean enabled;
+  boolean enabled;
 
-  private static final List<GrantedAuthority> AUTHORITIES = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+  List<String> authorities;
+
+  private static final List<GrantedAuthority> DEFAULT_AUTHORITIES = Collections.singletonList(new SimpleGrantedAuthority("ROLE_NONE"));
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    // TODO fixed value
-    return AUTHORITIES;
+    if (CollectionUtils.isEmpty(authorities)) {
+      return DEFAULT_AUTHORITIES;
+    }
+    return authorities.stream() //
+            .map(SimpleGrantedAuthority::new) //
+            .collect(Collectors.toList());
   }
 
   @Override

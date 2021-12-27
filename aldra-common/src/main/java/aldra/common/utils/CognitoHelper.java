@@ -28,50 +28,50 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CognitoHelper {
 
-    private final AWSSettings awsSettings;
+  private final AWSSettings awsSettings;
 
-    private AWSCognitoIdentityProvider client() {
-        return AWSCognitoIdentityProviderClientBuilder.standard() //
-                .withRegion(awsSettings.getCognito().getRegion()) //
-                .withCredentials(new AWSStaticCredentialsProvider(awsSettings.getCredentials())) //
-                .build();
-    }
+  private AWSCognitoIdentityProvider client() {
+    return AWSCognitoIdentityProviderClientBuilder.standard() //
+            .withRegion(awsSettings.getCognito().getRegion()) //
+            .withCredentials(new AWSStaticCredentialsProvider(awsSettings.getCredentials())) //
+            .build();
+  }
 
-    public AdminInitiateAuthResult login(@NonNull String userName, @NonNull String password) {
-        return client().adminInitiateAuth(new AdminInitiateAuthRequest() //
-                .withAuthFlow(AuthFlowType.ADMIN_NO_SRP_AUTH) //
-                .withUserPoolId(awsSettings.getCognito().getPoolId()) //
-                .withClientId(awsSettings.getCognito().getClientId()) //
-                .withAuthParameters(Map.of("USERNAME", userName, "PASSWORD", password)));
-    }
+  public AdminInitiateAuthResult login(@NonNull String userName, @NonNull String password) {
+    return client().adminInitiateAuth(new AdminInitiateAuthRequest() //
+            .withAuthFlow(AuthFlowType.ADMIN_NO_SRP_AUTH) //
+            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+            .withClientId(awsSettings.getCognito().getClientId()) //
+            .withAuthParameters(Map.of("USERNAME", userName, "PASSWORD", password)));
+  }
 
-    public ListUsersResult getUserByEmail(@NonNull String email) {
-        val request = new ListUsersRequest() //
-                .withUserPoolId(awsSettings.getCognito().getPoolId()) //
-                .withFilter(String.format("email=\"%s\"", email)) //
-                .withLimit(5);
-        return client().listUsers(request);
-    }
+  public ListUsersResult getUserByEmail(@NonNull String email) {
+    val request = new ListUsersRequest() //
+            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+            .withFilter(String.format("email=\"%s\"", email)) //
+            .withLimit(5);
+    return client().listUsers(request);
+  }
 
-    public AdminGetUserResult getUserByUserName(@NonNull String userName) {
-        val request = new AdminGetUserRequest() //
-                .withUserPoolId(awsSettings.getCognito().getPoolId()) //
-                .withUsername(userName);
-        return client().adminGetUser(request);
-    }
+  public AdminGetUserResult getUserByUserName(@NonNull String userName) {
+    val request = new AdminGetUserRequest() //
+            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+            .withUsername(userName);
+    return client().adminGetUser(request);
+  }
 
-    public AdminCreateUserResult createUser(@NonNull String email) {
-        val emailAttribute = new AttributeType() //
-                .withName("email") //
-                .withValue(email);
-        val emailVerifiedAttribute = new AttributeType() //
-                .withName("email_verified") //
-                .withValue("true");
-        val createUserRequest = new AdminCreateUserRequest() //
-                .withUserPoolId(awsSettings.getCognito().getPoolId()) //
-                .withUsername(email) //
-                .withTemporaryPassword(RandomStringUtils.randomAlphanumeric(16)) //
-                .withUserAttributes(emailAttribute, emailVerifiedAttribute);
-        return client().adminCreateUser(createUserRequest);
-    }
+  public AdminCreateUserResult createUser(@NonNull String email) {
+    val emailAttribute = new AttributeType() //
+            .withName("email") //
+            .withValue(email);
+    val emailVerifiedAttribute = new AttributeType() //
+            .withName("email_verified") //
+            .withValue("true");
+    val createUserRequest = new AdminCreateUserRequest() //
+            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+            .withUsername(email) //
+            .withTemporaryPassword(RandomStringUtils.randomAlphanumeric(16)) //
+            .withUserAttributes(emailAttribute, emailVerifiedAttribute);
+    return client().adminCreateUser(createUserRequest);
+  }
 }

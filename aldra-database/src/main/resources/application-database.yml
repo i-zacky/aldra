@@ -27,8 +27,8 @@ spring:
         - dev
         - ut
   # remove comment out when debug on IDE
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://127.0.0.1:5432/aldra_dev
-    username: app
-    password: BX3R7blD2UiPiM9F
+  # datasource:
+  #   driver-class-name: org.postgresql.Driver
+  #   url: jdbc:postgresql://127.0.0.1:5432/aldra_dev
+  #   username: app
+  #   password: BX3R7blD2UiPiM9F

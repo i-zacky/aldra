@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS authority (
+    role_id INTEGER NOT NULL,
+    permission VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (role_id, permission)
+);

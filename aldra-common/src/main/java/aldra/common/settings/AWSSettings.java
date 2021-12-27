@@ -19,25 +19,25 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class AWSSettings {
 
-    private final AWSProperties general;
+  private final AWSProperties general;
 
-    private final S3Properties s3;
+  private final S3Properties s3;
 
-    private final CognitoProperties cognito;
+  private final CognitoProperties cognito;
 
-    private final Environment environment;
+  private final Environment environment;
 
-    public AWSCredentials getCredentials() {
-        val isLocal = Arrays.stream(environment.getActiveProfiles()) //
-                .anyMatch(profile -> StringUtils.containsAny(profile, "dev", "ut"));
-        if (isLocal) {
-            val accessKey = general.getAccessKeyId();
-            val secretAccessKey = general.getSecretAccessKey();
-            log.info("loaded environment variables. AWS_ACCESS_KEY_ID={}, AWS_SECRET_ACCESS_KEY={}", accessKey, secretAccessKey);
-            return new BasicAWSCredentials(accessKey, secretAccessKey);
-        } else {
-            val wrapper = new EC2ContainerCredentialsProviderWrapper();
-            return wrapper.getCredentials();
-        }
+  public AWSCredentials getCredentials() {
+    val isLocal = Arrays.stream(environment.getActiveProfiles()) //
+            .anyMatch(profile -> StringUtils.containsAny(profile, "dev", "ut"));
+    if (isLocal) {
+      val accessKey = general.getAccessKeyId();
+      val secretAccessKey = general.getSecretAccessKey();
+      log.info("loaded environment variables. AWS_ACCESS_KEY_ID={}, AWS_SECRET_ACCESS_KEY={}", accessKey, secretAccessKey);
+      return new BasicAWSCredentials(accessKey, secretAccessKey);
+    } else {
+      val wrapper = new EC2ContainerCredentialsProviderWrapper();
+      return wrapper.getCredentials();
     }
+  }
 }

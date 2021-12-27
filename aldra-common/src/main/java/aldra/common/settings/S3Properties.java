@@ -13,11 +13,11 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "aws.s3")
 public class S3Properties {
 
-    private String endpointUrl;
+  private String endpointUrl;
 
-    private String region;
+  private String region;
 
-    private String dataBucket;
+  private String dataBucket;
 
-    private Long expirationSeconds;
+  private Long expirationSeconds;
 }

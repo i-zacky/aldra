@@ -13,13 +13,13 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "aws.cognito")
 public class CognitoProperties {
 
-    private String region;
+  private String region;
 
-    private String poolId;
+  private String poolId;
 
-    private String clientId;
+  private String clientId;
 
-    private String issuer;
+  private String issuer;
 
-    private String jwkUrl;
+  private String jwkUrl;
 }

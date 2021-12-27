@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StaffMapper extends StaffMapperDefault {
 
-    int insertOne(@Param("entity") Staff staff);
+  int insertOne(@Param("entity") Staff staff);
 }

@@ -1,6 +1,7 @@
 package aldra.api.framework.auth;
 
 import aldra.common.settings.AWSSettings;
+import aldra.database.domain.repository.user.AuthorityMapper;
 import com.auth0.jwk.GuavaCachedJwkProvider;
 import com.auth0.jwk.UrlJwkProvider;
 import com.auth0.jwt.JWT;
@@ -24,6 +25,8 @@ public class JWTAuthorizationUserDetailsService implements AuthenticationUserDet
 
   private final AWSSettings awsSettings;
 
+  private final AuthorityMapper authorityMapper;
+
   @Override
   public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken token) throws UsernameNotFoundException {
     if (Objects.isNull(token.getPrincipal())) {
@@ -39,8 +42,11 @@ public class JWTAuthorizationUserDetailsService implements AuthenticationUserDet
               .withIssuer(awsSettings.getCognito().getIssuer()) //
               .build();
       val verified = verifier.verify(decoded);
+      val username = verified.getClaim("cognito:username").asString();
 
-      return AuthenticatedUser.authenticated(verified.getClaim("cognito:username").asString());
+      return AuthenticatedUser //
+              .authenticated(verified.getClaim("cognito:username").asString()) //
+              .setAuthorities(authorityMapper.findPermissionByStaffName(username));
     } catch (Exception e) {
       log.error("invalid jwt token", e);
       throw new BadCredentialsException("bad credentials");

@@ -13,9 +13,9 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "aws")
 public class AWSProperties {
 
-    private String defaultRegion;
+  private String defaultRegion;
 
-    private String accessKeyId;
+  private String accessKeyId;
 
-    private String secretAccessKey;
+  private String secretAccessKey;
 }
