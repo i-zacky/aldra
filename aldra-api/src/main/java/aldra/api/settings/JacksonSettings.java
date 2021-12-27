@@ -1,5 +1,6 @@
 package aldra.api.settings;
 
+import aldra.api.framework.jackson.IgnoreLoggingIntrospector;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -31,6 +33,13 @@ public class JacksonSettings {
   @Bean
   public ObjectMapper objectMapper() {
     return configureCommonSettings();
+  }
+
+  @Bean(name = "loggingObjectMapper")
+  public ObjectMapper loggingObjectMapper() {
+    val mapper = configureCommonSettings();
+    mapper.setAnnotationIntrospector(new IgnoreLoggingIntrospector());
+    return mapper;
   }
 
   private ObjectMapper configureCommonSettings() {
