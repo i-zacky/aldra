@@ -18,6 +18,11 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 30
 
+application:
+  clock:
+    fixed: ${CLOCK_FIXED:false}
+    time-zone: ${CLOCK_TIME_ZONE:Asia/Tokyo}
+
 # for dev / ut
 ---
 spring:

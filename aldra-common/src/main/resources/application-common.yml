@@ -1,5 +1,5 @@
 aws:
-  default-region: ${AWS_DEFAULT_REGION}
+  default-region: ${AWS_DEFAULT_REGION:ap-northeast-1}
   access-key-id: ${AWS_ACCESS_KEY_ID}
   secret-access-key: ${AWS_SECRET_ACCESS_KEY}
   s3:
@@ -9,7 +9,7 @@ aws:
     expiration-seconds: 60
   cognito:
     region: ${aws.default-region}
-    pool-id: ${COGNITO_USER_POOL_ID}
-    client-id: ${COGNITO_CLIENT_ID}
+    pool-id: ${COGNITO_USER_POOL_ID:}
+    client-id: ${COGNITO_CLIENT_ID:}
     issuer: https://cognito-idp.${aws.cognito.region}.amazonaws.com/${aws.cognito.pool-id}
     jwk-url: https://cognito-idp.${aws.cognito.region}.amazonaws.com/${aws.cognito.pool-id}/.well-known/jwks.json

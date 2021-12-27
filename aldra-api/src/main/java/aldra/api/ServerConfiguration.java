@@ -1,6 +1,7 @@
 package aldra.api;
 
 import aldra.api.settings.JacksonSettings;
+import aldra.database.settings.ClockSettings;
 import aldra.database.settings.DataSourceSettings;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
@@ -25,6 +26,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @Import({ //
     JacksonSettings.class, //
     DataSourceSettings.class, //
+    ClockSettings.class, //
 })
 public class ServerConfiguration {
 

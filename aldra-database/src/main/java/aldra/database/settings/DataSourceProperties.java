@@ -1,31 +1,34 @@
 package aldra.database.settings;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @NoArgsConstructor
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class DataSourceProperties {
 
-  private String driverClassName;
+  String driverClassName;
 
-  private String poolName;
+  String poolName;
 
-  private String url;
+  String url;
 
-  private String username;
+  String username;
 
-  private String password;
+  String password;
 
-  private int maximumPoolSize;
+  int maximumPoolSize;
 
-  private int minimumIdle;
+  int minimumIdle;
 
-  private int idleTimeout;
+  int idleTimeout;
 
-  private int connectionTimeout;
+  int connectionTimeout;
 
-  private long leakDetectionThreshold;
+  long leakDetectionThreshold;
 }
