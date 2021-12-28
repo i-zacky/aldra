@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
+    inputs:
+      env:
+        description: target environment
+        required: false
 
 jobs:
   build:
@@ -14,6 +19,7 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 11.0.7
+      - run: echo ${{ github.event.inputs.env }}
       - name: OpenAPI Generator
         run: ./gradlew :aldra-api:oaGenerate
       - name: MyBatis Generator
