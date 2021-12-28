@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - master
-  workflow_dispatch:
-    inputs:
-      env:
-        description: target environment
-        required: false
 
 jobs:
   build:
@@ -16,11 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v2
         with:
-          java-version: 11.0.7
-      - run: echo ${{ github.event.inputs.env }}
-      - name: OpenAPI Generator
+          java-version: 11
+          cache: gradle
+      - name: Run Docker Containers
+        run: docker-compose up -d
+      - name: Run OpenAPI Generator
         run: ./gradlew :aldra-api:oaGenerate
-      - name: MyBatis Generator
+      - name: Run MyBatis Generator
         run: ./gradlew :aldra-database:mbGenerate
