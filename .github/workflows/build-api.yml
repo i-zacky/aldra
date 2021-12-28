@@ -16,3 +16,5 @@ jobs:
           java-version: 11.0.7
       - name: OpenAPI Generator
         run: ./gradlew :aldra-api:oaGenerate
+      - name: MyBatis Generator
+        run: ./gradlew :aldra-database:mbGenerate
