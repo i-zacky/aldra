@@ -10,6 +10,8 @@ import com.amazonaws.services.cognitoidp.model.AdminGetUserRequest;
 import com.amazonaws.services.cognitoidp.model.AdminGetUserResult;
 import com.amazonaws.services.cognitoidp.model.AdminInitiateAuthRequest;
 import com.amazonaws.services.cognitoidp.model.AdminInitiateAuthResult;
+import com.amazonaws.services.cognitoidp.model.AdminUserGlobalSignOutRequest;
+import com.amazonaws.services.cognitoidp.model.AdminUserGlobalSignOutResult;
 import com.amazonaws.services.cognitoidp.model.AttributeType;
 import com.amazonaws.services.cognitoidp.model.AuthFlowType;
 import com.amazonaws.services.cognitoidp.model.ListUsersRequest;
@@ -43,6 +45,20 @@ public class CognitoHelper {
             .withUserPoolId(awsSettings.getCognito().getPoolId()) //
             .withClientId(awsSettings.getCognito().getClientId()) //
             .withAuthParameters(Map.of("USERNAME", userName, "PASSWORD", password)));
+  }
+
+  public AdminUserGlobalSignOutResult logout(@NonNull String userName) {
+    return client().adminUserGlobalSignOut(new AdminUserGlobalSignOutRequest() //
+            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+            .withUsername(userName));
+  }
+
+  public AdminInitiateAuthResult refreshToken(@NonNull String token) {
+    return client().adminInitiateAuth(new AdminInitiateAuthRequest() //
+            .withAuthFlow(AuthFlowType.REFRESH_TOKEN) //
+            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+            .withClientId(awsSettings.getCognito().getClientId()) //
+            .withAuthParameters(Map.of("REFRESH_TOKEN", token)));
   }
 
   public ListUsersResult getUserByEmail(@NonNull String email) {

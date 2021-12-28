@@ -1,0 +1,11 @@
+get:
+  summary: Logout
+  description: Logout
+  operationId: execute
+  tags:
+    - Logout
+  security:
+    - Bearer: []
+  responses:
+    200:
+      description: OK

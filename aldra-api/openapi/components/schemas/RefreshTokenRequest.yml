@@ -1,0 +1,8 @@
+type: object
+properties:
+  refreshToken:
+    description: refresh token
+    type: string
+    example: yyyyy
+required:
+  - refreshToken

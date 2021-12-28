@@ -1,9 +1,11 @@
 post:
-  summary: create staff
-  description: create a staff
+  summary: Create staff
+  description: Create a staff
   operationId: execute
   tags:
     - CreateStaff
+  security:
+    - Bearer: []
   requestBody:
     content:
       application/json:

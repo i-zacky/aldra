@@ -1,0 +1,6 @@
+type: object
+properties:
+  idToken:
+    description: id token
+    type: string
+    example: xxxxx

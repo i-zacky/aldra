@@ -1,0 +1,18 @@
+post:
+  summary: Refresh Cognito ID Token
+  description: Refresh Cognito ID Token
+  operationId: execute
+  tags:
+    - RefreshToken
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../components/schemas/RefreshTokenRequest.yml"
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/RefreshTokenResponse.yml"

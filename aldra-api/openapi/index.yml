@@ -1,8 +1,8 @@
 openapi: "3.0.0"
 
 info:
-  title: "guppy-server application"
-  description: "[guppy-server] WebAPIドキュメント"
+  title: "Albrecht Drais WebAPI"
+  description: "[Albrecht Drais] WebAPI Document"
   version: "1.0"
 
 servers:
@@ -25,5 +25,9 @@ components:
 paths:
   /api/v1/public/sandbox:
     $ref: "./paths/sandbox.yml"
+  /api/v1/public/refresh-token:
+    $ref: "./paths/refresh-token.yml"
+  /api/v1/protected/logout:
+    $ref: "./paths/logout.yml"
   /api/v1/protected/staff:
     $ref: "./paths/staff.yml"

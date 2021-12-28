@@ -1,6 +1,6 @@
 get:
-  summary: list sandbox
-  description: get a list of sandbox
+  summary: List sandbox
+  description: Get a list of sandbox
   operationId: execute
   tags:
     - GetSandbox
@@ -13,8 +13,8 @@ get:
             $ref: "../components/schemas/GetSandboxResponse.yml"
 
 post:
-  summary: create sandbox
-  description: create a sandbox
+  summary: Create sandbox
+  description: Create a sandbox
   operationId: execute
   tags:
     - CreateSandbox
