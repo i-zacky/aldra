@@ -9,6 +9,14 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-latest
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_NAME: aldra_dev
+      DB_USER: app
+      DB_PASSWORD: BX3R7blD2UiPiM9F
+      DB_JDBC_DRIVER: org.postgresql.Driver
+      DB_JDBC_URL: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v2
@@ -17,7 +25,7 @@ jobs:
           java-version: 11
           cache: gradle
       - name: Run Docker Containers
-        run: docker-compose up -d
+        run: docker-compose up -d --build
       - name: Run OpenAPI Generator
         run: ./gradlew :aldra-api:oaGenerate
       - name: Run MyBatis Generator
