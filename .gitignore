@@ -36,3 +36,6 @@ dist/
 
 # Ignore Gradle build output directory
 build
+
+# direnv file
+.envrc

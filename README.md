@@ -27,3 +27,19 @@ Database implementation (use MyBatis)
 - Java11
 - Docker
 - direnv
+
+## Setup
+
+### Activate direnv
+
+```sh
+$ cp .envrc.origin .envrc
+$ direnv allow
+```
+
+### Launch middleware
+
+```sh
+$ docker-compose build
+$ docker-compose up -d
+```

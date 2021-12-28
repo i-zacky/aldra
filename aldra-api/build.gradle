@@ -81,7 +81,6 @@ task oaGenerate(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTas
 
 bootRun {
     doFirst {
-        println('setting environment variables')
         file("${rootDir}/.envrc").readLines().each {
             def (key, value) = it.split(" ")[1].tokenize("=")
             environment(key, value)

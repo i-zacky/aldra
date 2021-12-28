@@ -20,8 +20,8 @@ mybatis:
 
 application:
   clock:
-    fixed: ${CLOCK_FIXED:false}
-    time-zone: ${CLOCK_TIME_ZONE:Asia/Tokyo}
+    fixed: ${CLOCK_FIXED}
+    time-zone: ${CLOCK_TIME_ZONE}
 
 # for dev / ut
 ---
@@ -31,9 +31,3 @@ spring:
       on-profile:
         - dev
         - ut
-  # remove comment out when debug on IDE
-  # datasource:
-  #   driver-class-name: org.postgresql.Driver
-  #   url: jdbc:postgresql://127.0.0.1:5432/aldra_dev
-  #   username: app
-  #   password: BX3R7blD2UiPiM9F
