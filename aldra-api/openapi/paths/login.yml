@@ -1,0 +1,18 @@
+get:
+  summary: Login
+  description: Login
+  operationId: execute
+  tags:
+    - Login
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../components/schemas/LoginRequest.yml"
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/LoginResponse.yml"

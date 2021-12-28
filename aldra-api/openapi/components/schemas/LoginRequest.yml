@@ -1,0 +1,13 @@
+type: object
+required:
+  - email
+  - password
+properties:
+  email:
+    type: string
+    description: email address
+    example: abc@example.com
+  roleId:
+    type: string
+    description: password
+    example: xxxxxxxx

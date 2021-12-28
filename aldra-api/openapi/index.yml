@@ -25,6 +25,8 @@ components:
 paths:
   /api/v1/public/sandbox:
     $ref: "./paths/sandbox.yml"
+  /api/v1/public/login:
+    $ref: "./paths/login.yml"
   /api/v1/public/refresh-token:
     $ref: "./paths/refresh-token.yml"
   /api/v1/protected/logout:
