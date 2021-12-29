@@ -32,7 +32,7 @@ public class WebAPIAccessLogFilter extends ServletContextRequestLoggingFilter {
   }
 
   @Override
-  protected boolean shouldNotFilter(HttpServletRequest request) {
+  protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
     // ignore health check endpoint
     return StringUtils.equals("/actuator/health", request.getRequestURI());
   }
