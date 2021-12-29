@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.web.filter.ServletContextRequestLoggingFilter;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
@@ -33,7 +32,7 @@ public class WebAPIAccessLogFilter extends ServletContextRequestLoggingFilter {
   }
 
   @Override
-  protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+  protected boolean shouldNotFilter(HttpServletRequest request) {
     // ignore health check endpoint
     return StringUtils.equals("/actuator/health", request.getRequestURI());
   }
