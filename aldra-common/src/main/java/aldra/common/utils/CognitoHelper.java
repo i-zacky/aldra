@@ -10,6 +10,8 @@ import com.amazonaws.services.cognitoidp.model.AdminGetUserRequest;
 import com.amazonaws.services.cognitoidp.model.AdminGetUserResult;
 import com.amazonaws.services.cognitoidp.model.AdminInitiateAuthRequest;
 import com.amazonaws.services.cognitoidp.model.AdminInitiateAuthResult;
+import com.amazonaws.services.cognitoidp.model.AdminResetUserPasswordRequest;
+import com.amazonaws.services.cognitoidp.model.AdminResetUserPasswordResult;
 import com.amazonaws.services.cognitoidp.model.AdminRespondToAuthChallengeRequest;
 import com.amazonaws.services.cognitoidp.model.AdminRespondToAuthChallengeResult;
 import com.amazonaws.services.cognitoidp.model.AdminUserGlobalSignOutRequest;
@@ -118,5 +120,12 @@ public class CognitoHelper {
             .withAccessToken(accessToken) //
             .withPreviousPassword(currentPassword) //
             .withProposedPassword(newPassword));
+  }
+
+  public AdminResetUserPasswordResult forgotPassword(@NonNull String userName) {
+    val request = new AdminResetUserPasswordRequest() //
+            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+            .withUsername(userName);
+    return client().adminResetUserPassword(request);
   }
 }
