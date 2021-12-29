@@ -1,9 +1,9 @@
 name: build api
 
 on:
-  push:
+  pull_request:
     branches:
-      - master
+      - "*"
 
 jobs:
   build:
@@ -24,9 +24,17 @@ jobs:
           distribution: adopt
           java-version: 11
           cache: gradle
+      - name: Run Spotless Check
+        run: ./gradlew spotlessCheck
       - name: Run Docker Containers
         run: docker-compose up -d --build
+      - name: Run Flyway Migrate
+        run: ./gradlew :aldra-database:flywayMigrate
       - name: Run OpenAPI Generator
         run: ./gradlew :aldra-api:oaGenerate
       - name: Run MyBatis Generator
         run: ./gradlew :aldra-database:mbGenerate
+      - name: Run Spotless
+        run: ./gradlew spotlessApply
+      - name: Build aldra-api
+        run: ./gradlew :aldra-api:build
