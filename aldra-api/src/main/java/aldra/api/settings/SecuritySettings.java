@@ -6,6 +6,7 @@ import aldra.api.framework.auth.CognitoAuthenticationSuccessHandler;
 import aldra.api.framework.auth.CognitoAuthenticationUserDetailsService;
 import aldra.api.framework.auth.JWTAuthorizationFilter;
 import aldra.api.framework.auth.JWTAuthorizationUserDetailsService;
+import aldra.api.framework.interceptor.WebAPIAccessLogFilter;
 import aldra.common.settings.AWSSettings;
 import aldra.common.utils.CognitoHelper;
 import aldra.database.domain.repository.user.AuthorityMapper;
@@ -82,7 +83,8 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
             .exceptionHandling().accessDeniedHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_FORBIDDEN)) //
             .and() //
             .addFilterAt(cognitoAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) //
-            .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class) //
+            .addFilterBefore(new WebAPIAccessLogFilter(), UsernamePasswordAuthenticationFilter.class);
   }
 
   private CorsConfigurationSource corsConfigurationSource() {

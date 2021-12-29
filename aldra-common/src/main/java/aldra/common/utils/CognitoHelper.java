@@ -18,6 +18,8 @@ import com.amazonaws.services.cognitoidp.model.AdminResetUserPasswordRequest;
 import com.amazonaws.services.cognitoidp.model.AdminResetUserPasswordResult;
 import com.amazonaws.services.cognitoidp.model.AdminRespondToAuthChallengeRequest;
 import com.amazonaws.services.cognitoidp.model.AdminRespondToAuthChallengeResult;
+import com.amazonaws.services.cognitoidp.model.AdminUpdateUserAttributesRequest;
+import com.amazonaws.services.cognitoidp.model.AdminUpdateUserAttributesResult;
 import com.amazonaws.services.cognitoidp.model.AdminUserGlobalSignOutRequest;
 import com.amazonaws.services.cognitoidp.model.AdminUserGlobalSignOutResult;
 import com.amazonaws.services.cognitoidp.model.AttributeType;
@@ -160,5 +162,19 @@ public class CognitoHelper {
             .withUserPoolId(awsSettings.getCognito().getPoolId()) //
             .withUsername(userName);
     return client().adminEnableUser(request);
+  }
+
+  public AdminUpdateUserAttributesResult changeEmail(@NonNull String userName, @NonNull String email) {
+    val emailAttribute = new AttributeType() //
+            .withName("email") //
+            .withValue(email);
+    val emailVerifiedAttribute = new AttributeType() //
+            .withName("email_verified") //
+            .withValue("true");
+    val request = new AdminUpdateUserAttributesRequest() //
+            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+            .withUsername(userName) //
+            .withUserAttributes(emailAttribute, emailVerifiedAttribute);
+    return client().adminUpdateUserAttributes(request);
   }
 }
