@@ -18,3 +18,20 @@ post:
         application/json:
           schema:
             $ref: "../components/schemas/CreateStaffResponse.yml"
+
+put:
+  summary: Update staff
+  description: Update a staff
+  operationId: execute
+  tags:
+    - UpdateStaff
+  security:
+    - Bearer: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../components/schemas/UpdateStaffRequest.yml"
+  responses:
+    200:
+      description: OK

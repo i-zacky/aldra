@@ -1,0 +1,19 @@
+type: object
+required:
+  - id
+  - roleId
+properties:
+  id:
+    type: integer
+    format: int32
+    description: staff id
+    example: 12345
+  enable:
+    type: boolean
+    description: available flag
+    example: true
+  roleId:
+    type: integer
+    format: int32
+    description: role id
+    example: 12345

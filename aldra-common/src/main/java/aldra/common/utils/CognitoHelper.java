@@ -6,6 +6,10 @@ import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
 import com.amazonaws.services.cognitoidp.model.AdminCreateUserRequest;
 import com.amazonaws.services.cognitoidp.model.AdminCreateUserResult;
+import com.amazonaws.services.cognitoidp.model.AdminDisableUserRequest;
+import com.amazonaws.services.cognitoidp.model.AdminDisableUserResult;
+import com.amazonaws.services.cognitoidp.model.AdminEnableUserRequest;
+import com.amazonaws.services.cognitoidp.model.AdminEnableUserResult;
 import com.amazonaws.services.cognitoidp.model.AdminGetUserRequest;
 import com.amazonaws.services.cognitoidp.model.AdminGetUserResult;
 import com.amazonaws.services.cognitoidp.model.AdminInitiateAuthRequest;
@@ -142,5 +146,19 @@ public class CognitoHelper {
             .withPassword(password) //
             .withConfirmationCode(confirmationCode);
     return client().confirmForgotPassword(request);
+  }
+
+  public AdminDisableUserResult disableUser(@NonNull String userName) {
+    val request = new AdminDisableUserRequest() //
+            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+            .withUsername(userName);
+    return client().adminDisableUser(request);
+  }
+
+  public AdminEnableUserResult enableUser(@NonNull String userName) {
+    val request = new AdminEnableUserRequest() //
+            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+            .withUsername(userName);
+    return client().adminEnableUser(request);
   }
 }
