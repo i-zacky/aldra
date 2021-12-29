@@ -10,6 +10,8 @@ import com.amazonaws.services.cognitoidp.model.AdminGetUserRequest;
 import com.amazonaws.services.cognitoidp.model.AdminGetUserResult;
 import com.amazonaws.services.cognitoidp.model.AdminInitiateAuthRequest;
 import com.amazonaws.services.cognitoidp.model.AdminInitiateAuthResult;
+import com.amazonaws.services.cognitoidp.model.AdminRespondToAuthChallengeRequest;
+import com.amazonaws.services.cognitoidp.model.AdminRespondToAuthChallengeResult;
 import com.amazonaws.services.cognitoidp.model.AdminUserGlobalSignOutRequest;
 import com.amazonaws.services.cognitoidp.model.AdminUserGlobalSignOutResult;
 import com.amazonaws.services.cognitoidp.model.AttributeType;
@@ -89,5 +91,19 @@ public class CognitoHelper {
             .withTemporaryPassword(RandomStringUtils.randomAlphanumeric(16)) //
             .withUserAttributes(emailAttribute, emailVerifiedAttribute);
     return client().adminCreateUser(createUserRequest);
+  }
+
+  public AdminRespondToAuthChallengeResult changeTemporaryPassword( //
+          @NonNull String challengeName, //
+          @NonNull String session, //
+          @NonNull String userName, //
+          @NonNull String newPassword //
+  ) {
+    return client().adminRespondToAuthChallenge(new AdminRespondToAuthChallengeRequest() //
+            .withChallengeName(challengeName) //
+            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+            .withClientId(awsSettings.getCognito().getClientId())//
+            .withSession(session) //
+            .withChallengeResponses(Map.of("USERNAME", userName, "NEW_PASSWORD", newPassword)));
   }
 }

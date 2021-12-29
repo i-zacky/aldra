@@ -29,6 +29,8 @@ paths:
     $ref: "./paths/login.yml"
   /api/v1/public/refresh-token:
     $ref: "./paths/refresh-token.yml"
+  /api/v1/public/temporary-password:
+    $ref: "./paths/temporary-password.yml"
   /api/v1/protected/logout:
     $ref: "./paths/logout.yml"
   /api/v1/protected/staff:
