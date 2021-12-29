@@ -20,6 +20,8 @@ import com.amazonaws.services.cognitoidp.model.AttributeType;
 import com.amazonaws.services.cognitoidp.model.AuthFlowType;
 import com.amazonaws.services.cognitoidp.model.ChangePasswordRequest;
 import com.amazonaws.services.cognitoidp.model.ChangePasswordResult;
+import com.amazonaws.services.cognitoidp.model.ConfirmForgotPasswordRequest;
+import com.amazonaws.services.cognitoidp.model.ConfirmForgotPasswordResult;
 import com.amazonaws.services.cognitoidp.model.ListUsersRequest;
 import com.amazonaws.services.cognitoidp.model.ListUsersResult;
 import lombok.RequiredArgsConstructor;
@@ -127,5 +129,18 @@ public class CognitoHelper {
             .withUserPoolId(awsSettings.getCognito().getPoolId()) //
             .withUsername(userName);
     return client().adminResetUserPassword(request);
+  }
+
+  public ConfirmForgotPasswordResult confirmForgotPassword( //
+          @NonNull String userName, //
+          @NonNull String password, //
+          @NonNull String confirmationCode //
+  ) {
+    val request = new ConfirmForgotPasswordRequest() //
+            .withClientId(awsSettings.getCognito().getClientId()) //
+            .withUsername(userName) //
+            .withPassword(password) //
+            .withConfirmationCode(confirmationCode);
+    return client().confirmForgotPassword(request);
   }
 }

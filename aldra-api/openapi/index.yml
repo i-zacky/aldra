@@ -33,6 +33,8 @@ paths:
     $ref: "./paths/temporary-password.yml"
   /api/v1/public/forgot-password:
     $ref: "./paths/forgot-password.yml"
+  /api/v1/public/reset-password:
+    $ref: "./paths/reset-password.yml"
   /api/v1/protected/change-password:
     $ref: "./paths/change-password.yml"
   /api/v1/protected/logout:
