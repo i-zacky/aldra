@@ -16,6 +16,8 @@ import com.amazonaws.services.cognitoidp.model.AdminUserGlobalSignOutRequest;
 import com.amazonaws.services.cognitoidp.model.AdminUserGlobalSignOutResult;
 import com.amazonaws.services.cognitoidp.model.AttributeType;
 import com.amazonaws.services.cognitoidp.model.AuthFlowType;
+import com.amazonaws.services.cognitoidp.model.ChangePasswordRequest;
+import com.amazonaws.services.cognitoidp.model.ChangePasswordResult;
 import com.amazonaws.services.cognitoidp.model.ListUsersRequest;
 import com.amazonaws.services.cognitoidp.model.ListUsersResult;
 import lombok.RequiredArgsConstructor;
@@ -105,5 +107,16 @@ public class CognitoHelper {
             .withClientId(awsSettings.getCognito().getClientId())//
             .withSession(session) //
             .withChallengeResponses(Map.of("USERNAME", userName, "NEW_PASSWORD", newPassword)));
+  }
+
+  public ChangePasswordResult changePassword( //
+          @NonNull String accessToken, //
+          @NonNull String currentPassword, //
+          @NonNull String newPassword //
+  ) {
+    return client().changePassword(new ChangePasswordRequest() //
+            .withAccessToken(accessToken) //
+            .withPreviousPassword(currentPassword) //
+            .withProposedPassword(newPassword));
   }
 }
