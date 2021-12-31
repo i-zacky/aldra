@@ -10,6 +10,7 @@ jobs:
     name: build
     runs-on: ubuntu-latest
     env:
+      COMPOSE_FILE: docker/postgresql.yml
       DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DB_NAME: aldra_dev

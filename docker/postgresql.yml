@@ -5,7 +5,7 @@ services:
     container_name: aldra-db
     hostname: aldra-db
     build:
-      context: docker/postgresql
+      context: postgresql
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
