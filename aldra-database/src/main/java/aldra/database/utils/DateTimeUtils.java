@@ -3,15 +3,15 @@ package aldra.database.utils;
 import aldra.database.settings.ClockSettings;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DateTimeHelper {
+public final class DateTimeUtils {
 
   public static LocalDate today() {
     return LocalDate.now(ClockSettings.getClock());
@@ -30,10 +30,10 @@ public final class DateTimeHelper {
   }
 
   public static LocalDate toLocalDate(String dateAsString, @NonNull DateTimeFormatter with) {
-    if (StringUtils.isEmpty(dateAsString)) {
-      return null;
-    }
-    return LocalDate.parse(dateAsString, with);
+    return Optional.ofNullable(dateAsString) //
+            .filter(s -> !s.isEmpty()) //
+            .map(s -> LocalDate.parse(s, with)) //
+            .orElse(null);
   }
 
   public static LocalDateTime toLocalDateTime(String dateTimeAsString) {
@@ -45,10 +45,10 @@ public final class DateTimeHelper {
   }
 
   public static LocalDateTime toLocalDateTime(String dateTimeAsString, @NonNull DateTimeFormatter with) {
-    if (StringUtils.isEmpty(dateTimeAsString)) {
-      return null;
-    }
-    return LocalDateTime.parse(dateTimeAsString, with);
+    return Optional.ofNullable(dateTimeAsString) //
+            .filter(s -> !s.isEmpty()) //
+            .map(s -> LocalDateTime.parse(s, with)) //
+            .orElse(null);
   }
 
   public static String format(LocalDate source) {
@@ -56,11 +56,13 @@ public final class DateTimeHelper {
   }
 
   public static String format(LocalDate source, @NonNull DateTimePattern pattern) {
-    return source.format(pattern.format());
+    return format(source, pattern.format());
   }
 
   public static String format(LocalDate source, @NonNull DateTimeFormatter with) {
-    return source.format(with);
+    return Optional.ofNullable(source) //
+            .map(d -> d.format(with)) //
+            .orElse(null);
   }
 
   public static String format(LocalDateTime source) {
@@ -68,10 +70,12 @@ public final class DateTimeHelper {
   }
 
   public static String format(LocalDateTime source, @NonNull DateTimePattern pattern) {
-    return source.format(pattern.format());
+    return format(source, pattern.format());
   }
 
   public static String format(LocalDateTime source, @NonNull DateTimeFormatter with) {
-    return source.format(with);
+    return Optional.ofNullable(source) //
+            .map(d -> d.format(with)) //
+            .orElse(null);
   }
 }

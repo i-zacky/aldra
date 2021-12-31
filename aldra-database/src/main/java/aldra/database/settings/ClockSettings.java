@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.TimeZone;
 
 @Slf4j
 @Configuration
@@ -27,6 +28,7 @@ public class ClockSettings {
     this.fixedClockMapper = fixedClockMapper;
     this.clockProperties = clockProperties;
     clock = Clock.system(clockProperties.getZoneId());
+    TimeZone.setDefault(TimeZone.getTimeZone(clockProperties.getZoneId()));
   }
 
   @Scheduled(fixedDelay = 300000)

@@ -6,7 +6,7 @@ import aldra.common.framework.exception.ApplicationException;
 import aldra.common.framework.exception.ValidationException;
 import aldra.common.utils.CognitoHelper;
 import aldra.database.domain.repository.user.StaffMapper;
-import aldra.database.utils.DateTimeHelper;
+import aldra.database.utils.DateTimeUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -46,7 +46,7 @@ public class UpdateStaff implements UpdateStaffApi {
 
     // update staff table
     staff.setRoleId(request.getRoleId());
-    staff.setUpdatedAt(DateTimeHelper.now());
+    staff.setUpdatedAt(DateTimeUtils.now());
     staffMapper.update(staff);
 
     return ResponseEntity.ok().build();
