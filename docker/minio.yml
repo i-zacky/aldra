@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  aldra-s3:
+    container_name: aldra-s3
+    hostname: aldra-s3
+    image: minio/minio:latest
+    environment:
+      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID:-minio_access}
+      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY:-minio_secret}
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - aldra-s3-data:/data
+    networks:
+      - aldra
+    command: [ 'server', '/data', '--console-address', ':9001' ]
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  aladra-s3-create-bucket:
+    container_name: aldra-s3-create-bucket
+    image: minio/mc
+    environment:
+      MC_HOST_s3: http://${AWS_ACCESS_KEY_ID}:${AWS_SECRET_ACCESS_KEY}@aldra-s3:9000
+      REGION: ${AWS_DEFAULT_REGION}
+      DATA_BUCKET: ${S3_DATA_BUCKET}
+    networks:
+      - aldra
+    depends_on:
+      - aldra-s3
+    entrypoint: >
+      /bin/bash -c "
+      /usr/bin/mc mb s3/$${DATA_BUCKET} --region=$${REGION} --ignore-existing;
+      /usr/bin/mc policy set download s3/$${DATA_BUCKET};
+      exit 0;
+      "
+
+volumes:
+  aldra-s3-data:
+    name: aldra-s3-data
+    driver: local
+
+networks:
+  aldra:
+    name: aldra

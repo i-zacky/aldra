@@ -1,3 +1,4 @@
+export COMPOSE_FILE=docker/postgresql.yml:docker/minio.yml
 export DB_HOST=
 export DB_PORT=
 export DB_NAME=
