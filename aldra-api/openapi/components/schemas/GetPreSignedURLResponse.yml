@@ -1,0 +1,6 @@
+type: object
+properties:
+  url:
+    description: pre signed url
+    type: string
+    example: xxxxx

@@ -25,6 +25,10 @@ components:
 paths:
   /api/v1/public/sandbox:
     $ref: "./paths/sandbox.yml"
+  /api/v1/public/upload-file:
+    $ref: "./paths/upload-file.yml"
+  /api/v1/public/pre-signed-url:
+    $ref: "./paths/pre-signed-url.yml"
   /api/v1/public/login:
     $ref: "./paths/login.yml"
   /api/v1/public/refresh-token:

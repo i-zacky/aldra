@@ -1,0 +1,20 @@
+get:
+  summary: Get PreSigned URL
+  description: Get PreSigned URL
+  operationId: execute
+  tags:
+    - GetPreSignedURL
+  parameters:
+    - name: fileName
+      in: query
+      required: true
+      allowEmptyValue: false
+      schema:
+        type: string
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/GetPreSignedURLResponse.yml"

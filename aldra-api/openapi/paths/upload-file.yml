@@ -1,0 +1,18 @@
+post:
+  summary: Upload File
+  description: Upload File
+  operationId: execute
+  tags:
+    - UploadFile
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            file:
+              type: string
+              format: binary
+  responses:
+    201:
+      description: OK

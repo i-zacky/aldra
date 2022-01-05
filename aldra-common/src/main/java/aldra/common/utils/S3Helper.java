@@ -42,6 +42,14 @@ public class S3Helper {
             .build();
   }
 
+  public boolean exist(@NonNull String objectName) {
+    return exist(awsSettings.getS3().getDataBucket(), objectName);
+  }
+
+  public boolean exist(@NonNull String bucketName, @NonNull String objectName) {
+    return client().doesObjectExist(bucketName, objectName);
+  }
+
   public String generatePreSignedURL(@NonNull String objectName) {
     return generatePreSignedURL(HttpMethod.GET, awsSettings.getS3().getExpirationSeconds(), awsSettings.getS3().getDataBucket(), objectName);
   }
