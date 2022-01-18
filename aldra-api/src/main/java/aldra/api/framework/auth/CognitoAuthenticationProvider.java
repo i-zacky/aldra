@@ -1,5 +1,6 @@
 package aldra.api.framework.auth;
 
+import aldra.api.adapter.web.dto.ErrorCode;
 import aldra.common.utils.CognitoHelper;
 import com.amazonaws.services.cognitoidp.model.AdminInitiateAuthResult;
 import com.amazonaws.services.cognitoidp.model.InvalidParameterException;
@@ -10,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
@@ -33,35 +32,26 @@ public class CognitoAuthenticationProvider extends DaoAuthenticationProvider {
       initiateAuthResult = cognitoHelper.login(userDetails.getUsername(), (String) authentication.getCredentials());
     } catch (NotAuthorizedException | UserNotFoundException | InvalidParameterException e) {
       log.info("failed to initiate auth", e);
-      throw new BadCredentialsException("invalid password");
+      throw new AuthException(ErrorCode.EAN0001_0001);
     } catch (PasswordResetRequiredException e) {
       log.info("password reset is required", e);
-      throw new DisabledException("password reset is required");
+      throw new AuthException(ErrorCode.EAN0001_0003);
     }
 
     // ChallengeName = "NEW_PASSWORD_REQUIRED" is required change temporary password
     if (StringUtils.equals(initiateAuthResult.getChallengeName(), "NEW_PASSWORD_REQUIRED")) {
-      Optional.of(authentication) //
-              .ifPresent(token -> {
-                val response = LoginResponse.builder() //
-                        .status(initiateAuthResult.getChallengeName()) //
-                        .idToken(null) //
-                        .refreshToken(null) //
-                        .build();
-                token.setDetails(response);
-              });
-      return;
+      throw new AuthException(ErrorCode.EAN0001_0002);
     }
 
     if (Objects.isNull(initiateAuthResult.getAuthenticationResult())) {
-      throw new DisabledException("failed to authenticate");
+      throw new AuthException(ErrorCode.EAN0001_0001);
     }
 
     Optional.of(authentication) //
             .ifPresent(token -> {
               val result = initiateAuthResult.getAuthenticationResult();
               val response = LoginResponse.builder() //
-                      .status("ENABLED").idToken(result.getIdToken()) //
+                      .idToken(result.getIdToken()) //
                       .refreshToken(result.getRefreshToken()) //
                       .build();
               token.setDetails(response);

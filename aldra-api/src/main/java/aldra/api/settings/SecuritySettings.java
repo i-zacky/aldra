@@ -1,5 +1,6 @@
 package aldra.api.settings;
 
+import aldra.api.framework.auth.CognitoAuthenticationFailureHandler;
 import aldra.api.framework.auth.CognitoAuthenticationFilter;
 import aldra.api.framework.auth.CognitoAuthenticationProvider;
 import aldra.api.framework.auth.CognitoAuthenticationSuccessHandler;
@@ -103,7 +104,7 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
     val filter = new CognitoAuthenticationFilter(VERSION + "/public/login", "POST");
     filter.setAuthenticationManager(authenticationManager());
     filter.setAuthenticationSuccessHandler(new CognitoAuthenticationSuccessHandler());
-    filter.setAuthenticationFailureHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED));
+    filter.setAuthenticationFailureHandler(new CognitoAuthenticationFailureHandler());
     return filter;
   }
 

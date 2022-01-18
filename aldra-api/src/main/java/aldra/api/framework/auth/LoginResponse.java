@@ -7,8 +7,6 @@ import lombok.Value;
 @Builder
 public class LoginResponse {
 
-  String status;
-
   String idToken;
 
   String refreshToken;

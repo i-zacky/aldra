@@ -1,5 +1,6 @@
 package aldra.api.framework.auth;
 
+import aldra.api.adapter.web.dto.ErrorCode;
 import aldra.common.utils.CognitoHelper;
 import com.amazonaws.services.cognitoidp.model.UserType;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +21,14 @@ public class CognitoAuthenticationUserDetailsService implements UserDetailsServi
     val users = cognitoHelper.getUserByEmail(username).getUsers();
 
     if (users.stream().filter(UserType::getEnabled).count() > 1) {
-      throw new UsernameNotFoundException(String.format("retrieve multiple user: %s", username));
+      log.error("retrieve multiple user: {}", username);
+      throw new AuthException(ErrorCode.EAN0001_0001);
     }
 
     return users.stream() //
             .filter(UserType::getEnabled) //
             .findFirst() //
             .map(type -> AuthenticatedUser.authenticated(type.getUsername())) //
-            .orElseThrow(() -> new UsernameNotFoundException(String.format("failed to retrieve user: %s", username)));
+            .orElseThrow(() -> new AuthException(ErrorCode.EAN0001_0001));
   }
 }
