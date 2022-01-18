@@ -9,6 +9,7 @@ import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,6 +39,20 @@ public class CognitoAuthenticationProvider extends DaoAuthenticationProvider {
       throw new DisabledException("password reset is required");
     }
 
+    // ChallengeName = "NEW_PASSWORD_REQUIRED" is required change temporary password
+    if (StringUtils.equals(initiateAuthResult.getChallengeName(), "NEW_PASSWORD_REQUIRED")) {
+      Optional.of(authentication) //
+              .ifPresent(token -> {
+                val response = LoginResponse.builder() //
+                        .status(initiateAuthResult.getChallengeName()) //
+                        .idToken(null) //
+                        .refreshToken(null) //
+                        .build();
+                token.setDetails(response);
+              });
+      return;
+    }
+
     if (Objects.isNull(initiateAuthResult.getAuthenticationResult())) {
       throw new DisabledException("failed to authenticate");
     }
@@ -46,7 +61,7 @@ public class CognitoAuthenticationProvider extends DaoAuthenticationProvider {
             .ifPresent(token -> {
               val result = initiateAuthResult.getAuthenticationResult();
               val response = LoginResponse.builder() //
-                      .idToken(result.getIdToken()) //
+                      .status("ENABLED").idToken(result.getIdToken()) //
                       .refreshToken(result.getRefreshToken()) //
                       .build();
               token.setDetails(response);
