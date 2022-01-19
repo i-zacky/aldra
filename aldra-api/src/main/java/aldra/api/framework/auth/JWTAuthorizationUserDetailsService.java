@@ -1,15 +1,18 @@
 package aldra.api.framework.auth;
 
+import aldra.api.adapter.web.dto.ErrorCode;
 import aldra.common.settings.AWSSettings;
 import aldra.database.domain.repository.user.AuthorityMapper;
 import com.auth0.jwk.GuavaCachedJwkProvider;
 import com.auth0.jwk.UrlJwkProvider;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.InvalidClaimException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +33,7 @@ public class JWTAuthorizationUserDetailsService implements AuthenticationUserDet
   @Override
   public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken token) throws UsernameNotFoundException {
     if (Objects.isNull(token.getPrincipal())) {
-      throw new BadCredentialsException("JWT token is empty");
+      throw new AuthException(ErrorCode.EAZ0001_0001);
     }
 
     try {
@@ -47,9 +50,15 @@ public class JWTAuthorizationUserDetailsService implements AuthenticationUserDet
       return AuthenticatedUser //
               .authenticated(verified.getClaim("cognito:username").asString()) //
               .setAuthorities(authorityMapper.findPermissionByStaffName(username));
+    } catch (TokenExpiredException e) {
+      log.info("jwt token is expired", e);
+      throw new AuthException(ErrorCode.EAZ0001_0002);
+    } catch (SignatureVerificationException | InvalidClaimException e) {
+      log.info("jwt signature or claim is invalid", e);
+      throw new AuthException(ErrorCode.EAZ0001_0003);
     } catch (Exception e) {
-      log.error("invalid jwt token", e);
-      throw new BadCredentialsException("bad credentials");
+      log.error("failed to load user from jwt token", e);
+      throw new AuthException(ErrorCode.EAZ0001_0003);
     }
   }
 }

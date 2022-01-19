@@ -1,5 +1,6 @@
 package aldra.api.settings;
 
+import aldra.api.framework.auth.AuthFailureHandler;
 import aldra.api.framework.auth.CognitoAuthenticationFilter;
 import aldra.api.framework.auth.CognitoAuthenticationProvider;
 import aldra.api.framework.auth.CognitoAuthenticationSuccessHandler;
@@ -80,7 +81,8 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
             .antMatchers(VERSION + "/public/**").permitAll() //
             .antMatchers(VERSION + "/protected/**").authenticated() //
             .and() //
-            .exceptionHandling().accessDeniedHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_FORBIDDEN)) //
+            .exceptionHandling() //
+            .authenticationEntryPoint((req, res, ex) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED)) //
             .and() //
             .addFilterAt(cognitoAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) //
             .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class) //
@@ -103,7 +105,7 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
     val filter = new CognitoAuthenticationFilter(VERSION + "/public/login", "POST");
     filter.setAuthenticationManager(authenticationManager());
     filter.setAuthenticationSuccessHandler(new CognitoAuthenticationSuccessHandler());
-    filter.setAuthenticationFailureHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED));
+    filter.setAuthenticationFailureHandler(new AuthFailureHandler());
     return filter;
   }
 
@@ -112,7 +114,7 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
     val filter = new JWTAuthorizationFilter(VERSION + "/protected/**");
     filter.setAuthenticationManager(authenticationManager());
     filter.setAuthenticationSuccessHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_OK));
-    filter.setAuthenticationFailureHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED));
+    filter.setAuthenticationFailureHandler(new AuthFailureHandler());
     return filter;
   }
 }

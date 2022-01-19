@@ -1,15 +1,13 @@
 package aldra.api.adapter.web.dto;
 
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
-import java.util.List;
-
+@RequiredArgsConstructor
 @Value
 @Builder
-public class ValidationExceptionResponse {
+public class ExceptionResponseBase {
 
   ErrorCode error;
-
-  List<String> messages;
 }
