@@ -23,11 +23,21 @@ application:
     fixed: ${CLOCK_FIXED}
     time-zone: ${CLOCK_TIME_ZONE}
 
-# for dev / ut
+# for local / ut
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - local
+        - ut
+
+# for dev / stg / prod
 ---
 spring:
   config:
     activate:
       on-profile:
         - dev
-        - ut
+        - stg
+        - prod

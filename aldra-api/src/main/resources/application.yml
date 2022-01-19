@@ -1,21 +1,35 @@
 spring:
   profiles:
-    active: dev
+    active: local
   config:
     import:
       - classpath:application-common.yml
       - classpath:application-database.yml
 
-# for dev / ut
+# for local / ut
 ---
 spring:
   config:
     activate:
       on-profile:
-        - dev
+        - local
         - ut
 
 cors:
   allow-origins:
     - http://127.0.0.1:3000
     - http://localhost:3000
+
+# for dev / stg / prod
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - dev
+        - stg
+        - prod
+
+cors:
+  allow-origins:
+    - ${ALLOW_ORIGIN}
