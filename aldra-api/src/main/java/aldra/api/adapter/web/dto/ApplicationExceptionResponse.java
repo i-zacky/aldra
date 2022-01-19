@@ -7,6 +7,8 @@ import lombok.Value;
 @Builder
 public class ApplicationExceptionResponse {
 
+  ErrorCode error;
+
   String message;
 
   Object data;

@@ -17,13 +17,16 @@ public enum ErrorCode {
     EAN0001_0002("EAN-0001-0002", "required change temporary password"), //
     EAN0001_0003("EAN-0001-0003", "required reset password"), //
     // AuthZ errors
-    EAZ0001_0001("EAZ-0001-0001", "permission denied"), //
+    EAZ0001_0001("EAZ-0001-0001", "authorization token is empty"), //
+    EAZ0001_0002("EAZ-0001-0002", "authorization token is expired"), //
+    EAZ0001_0003("EAZ-0001-0003", "authorization token is invalid"), //
+    EAZ0002_0001("EAZ-0002-0001", "permission denied"), //
     // validation errors
     EV0001_0001("EV-0001-0001", "validation error"), //
     // application errors
     EAP0001_0001("EAP-0001-0001", "application error"), //
     // system errors
-    EAS0000_0000("EAS-0000-0000", "system error"), //
+    ES0000_0000("EAS-0000-0000", "system error"), //
   ;
 
   private final String code;

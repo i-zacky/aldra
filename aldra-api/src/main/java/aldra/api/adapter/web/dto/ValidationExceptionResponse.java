@@ -9,5 +9,7 @@ import java.util.List;
 @Builder
 public class ValidationExceptionResponse {
 
+  ErrorCode error;
+
   List<String> messages;
 }
