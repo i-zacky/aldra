@@ -28,8 +28,8 @@ public class AWSSettings {
   private final Environment environment;
 
   public AWSCredentials getCredentials() {
-    val isLocal = Arrays.stream(environment.getActiveProfiles()) //
-            .anyMatch(profile -> StringUtils.containsAny(profile, "local", "ut"));
+    val profiles = Arrays.asList(environment.getActiveProfiles());
+    val isLocal = profiles.contains("local") || profiles.contains("ut");
     if (isLocal) {
       val accessKey = general.getAccessKeyId();
       val secretAccessKey = general.getSecretAccessKey();
