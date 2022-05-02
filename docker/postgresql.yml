@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  aldra-db:
+  db:
     container_name: aldra-db
     hostname: aldra-db
     build:
@@ -14,12 +14,12 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - aldra-db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
     networks:
       - aldra
 
 volumes:
-  aldra-db-data:
+  db-data:
     name: aldra-db-data
     driver: local
 

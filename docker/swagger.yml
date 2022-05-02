@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  swagger-merger:
+    container_name: aldra-swagger-merger
+    build:
+      context: swagger
+    volumes:
+      - ../aldra-api/openapi:/data
+      - ./swagger/output:/output
+    environment:
+      NODE_PATH: /usr/local/lib/node_modules
+    entrypoint: 'node /watch'
+    healthcheck:
+      test: cat /output/swagger.yml
+      interval: 3s
+      retries: 5
+    networks:
+      - aldra
+
+  swagger-ui:
+    container_name: aldra-swagger-ui
+    image: swaggerapi/swagger-ui
+    depends_on:
+      swagger-merger:
+        condition: service_healthy
+    ports:
+      - '8081:8080'
+    volumes:
+      - type: bind
+        source: ./swagger/output/swagger.yml
+        target: /usr/share/nginx/html/swagger.yml
+    environment:
+      API_URL: swagger.yml
+    networks:
+      - aldra
+
+networks:
+  aldra:
+    name: aldra

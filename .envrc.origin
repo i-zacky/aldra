@@ -1,4 +1,4 @@
-export COMPOSE_FILE=docker/postgresql.yml:docker/minio.yml
+export COMPOSE_FILE=docker/postgresql.yml:docker/minio.yml:docker/swagger.yml:docker/schemaspy.yml
 export DB_HOST=
 export DB_PORT=
 export DB_NAME=

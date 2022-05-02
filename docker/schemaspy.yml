@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  schemaspy:
+    container_name: aldra-schemaspy
+    image: schemaspy/schemaspy:6.1.0
+    depends_on:
+      db:
+        condition: service_started
+    volumes:
+      - ./schemaspy/drivers:/drivers
+      - ./schemaspy/output:/output
+    command: >
+      java -jar schemaspy.jar
+         -t pgsql11
+         -dp /drivers
+         -host aldra-db
+         -port ${DB_PORT}
+         -db ${DB_NAME}
+         -s public
+         -u ${DB_USER}
+         -p ${DB_PASSWORD}
+         -I "flyway_schema_history"
+    networks:
+      - aldra
+
+  erd:
+    container_name: aldra-erd
+    image: nginx:stable
+    ports:
+      - '8082:80'
+    volumes:
+      - ./schemaspy/output:/usr/share/nginx/html:ro
+    networks:
+      - aldra
+
+networks:
+  aldra:
+    name: aldra
