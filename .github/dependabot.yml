@@ -1,0 +1,57 @@
+version: 2
+updates:
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+      time: '09:00'
+      timezone: 'Asia/Tokyo'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
+  - package-ecosystem: gradle
+    directory: /aldra-api/
+    schedule:
+      interval: weekly
+      time: '09:00'
+      timezone: 'Asia/Tokyo'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
+  - package-ecosystem: gradle
+    directory: /aldra-batch/
+    schedule:
+      interval: weekly
+      time: '09:00'
+      timezone: 'Asia/Tokyo'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
+  - package-ecosystem: gradle
+    directory: /aldra-common/
+    schedule:
+      interval: weekly
+      time: '09:00'
+      timezone: 'Asia/Tokyo'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
+  - package-ecosystem: gradle
+    directory: /aldra-database/
+    schedule:
+      interval: weekly
+      time: '09:00'
+      timezone: 'Asia/Tokyo'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
