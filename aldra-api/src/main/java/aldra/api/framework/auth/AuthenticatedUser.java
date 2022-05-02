@@ -1,6 +1,10 @@
 package aldra.api.framework.auth;
 
 import aldra.database.domain.entity.user.gen.Staff;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,11 +15,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -33,7 +32,8 @@ public class AuthenticatedUser extends Staff implements UserDetails {
 
   List<String> authorities;
 
-  private static final List<GrantedAuthority> DEFAULT_AUTHORITIES = Collections.singletonList(new SimpleGrantedAuthority("ROLE_NONE"));
+  private static final List<GrantedAuthority> DEFAULT_AUTHORITIES =
+      Collections.singletonList(new SimpleGrantedAuthority("ROLE_NONE"));
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -41,8 +41,8 @@ public class AuthenticatedUser extends Staff implements UserDetails {
       return DEFAULT_AUTHORITIES;
     }
     return authorities.stream() //
-            .map(SimpleGrantedAuthority::new) //
-            .collect(Collectors.toList());
+        .map(SimpleGrantedAuthority::new) //
+        .collect(Collectors.toList());
   }
 
   @Override

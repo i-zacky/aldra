@@ -30,14 +30,13 @@ import com.amazonaws.services.cognitoidp.model.ConfirmForgotPasswordRequest;
 import com.amazonaws.services.cognitoidp.model.ConfirmForgotPasswordResult;
 import com.amazonaws.services.cognitoidp.model.ListUsersRequest;
 import com.amazonaws.services.cognitoidp.model.ListUsersResult;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Slf4j
 @Component
@@ -48,35 +47,42 @@ public class CognitoHelper {
 
   private AWSCognitoIdentityProvider client() {
     return AWSCognitoIdentityProviderClientBuilder.standard() //
-            .withRegion(awsSettings.getCognito().getRegion()) //
-            .withCredentials(new AWSStaticCredentialsProvider(awsSettings.getCredentials())) //
-            .build();
+        .withRegion(awsSettings.getCognito().getRegion()) //
+        .withCredentials(new AWSStaticCredentialsProvider(awsSettings.getCredentials())) //
+        .build();
   }
 
   public AdminInitiateAuthResult login(@NonNull String userName, @NonNull String password) {
-    return client().adminInitiateAuth(new AdminInitiateAuthRequest() //
-            .withAuthFlow(AuthFlowType.ADMIN_NO_SRP_AUTH) //
-            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
-            .withClientId(awsSettings.getCognito().getClientId()) //
-            .withAuthParameters(Map.of("USERNAME", userName, "PASSWORD", password)));
+    return client()
+        .adminInitiateAuth(
+            new AdminInitiateAuthRequest() //
+                .withAuthFlow(AuthFlowType.ADMIN_NO_SRP_AUTH) //
+                .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+                .withClientId(awsSettings.getCognito().getClientId()) //
+                .withAuthParameters(Map.of("USERNAME", userName, "PASSWORD", password)));
   }
 
   public AdminUserGlobalSignOutResult logout(@NonNull String userName) {
-    return client().adminUserGlobalSignOut(new AdminUserGlobalSignOutRequest() //
-            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
-            .withUsername(userName));
+    return client()
+        .adminUserGlobalSignOut(
+            new AdminUserGlobalSignOutRequest() //
+                .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+                .withUsername(userName));
   }
 
   public AdminInitiateAuthResult refreshToken(@NonNull String token) {
-    return client().adminInitiateAuth(new AdminInitiateAuthRequest() //
-            .withAuthFlow(AuthFlowType.REFRESH_TOKEN) //
-            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
-            .withClientId(awsSettings.getCognito().getClientId()) //
-            .withAuthParameters(Map.of("REFRESH_TOKEN", token)));
+    return client()
+        .adminInitiateAuth(
+            new AdminInitiateAuthRequest() //
+                .withAuthFlow(AuthFlowType.REFRESH_TOKEN) //
+                .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+                .withClientId(awsSettings.getCognito().getClientId()) //
+                .withAuthParameters(Map.of("REFRESH_TOKEN", token)));
   }
 
   public ListUsersResult getUserByEmail(@NonNull String email) {
-    val request = new ListUsersRequest() //
+    val request =
+        new ListUsersRequest() //
             .withUserPoolId(awsSettings.getCognito().getPoolId()) //
             .withFilter(String.format("email=\"%s\"", email)) //
             .withLimit(5);
@@ -84,20 +90,24 @@ public class CognitoHelper {
   }
 
   public AdminGetUserResult getUserByUserName(@NonNull String userName) {
-    val request = new AdminGetUserRequest() //
+    val request =
+        new AdminGetUserRequest() //
             .withUserPoolId(awsSettings.getCognito().getPoolId()) //
             .withUsername(userName);
     return client().adminGetUser(request);
   }
 
   public AdminCreateUserResult createUser(@NonNull String email) {
-    val emailAttribute = new AttributeType() //
+    val emailAttribute =
+        new AttributeType() //
             .withName("email") //
             .withValue(email);
-    val emailVerifiedAttribute = new AttributeType() //
+    val emailVerifiedAttribute =
+        new AttributeType() //
             .withName("email_verified") //
             .withValue("true");
-    val createUserRequest = new AdminCreateUserRequest() //
+    val createUserRequest =
+        new AdminCreateUserRequest() //
             .withUserPoolId(awsSettings.getCognito().getPoolId()) //
             .withUsername(email) //
             .withTemporaryPassword(RandomStringUtils.randomAlphanumeric(16)) //
@@ -106,43 +116,49 @@ public class CognitoHelper {
   }
 
   public AdminRespondToAuthChallengeResult changeTemporaryPassword( //
-          @NonNull String challengeName, //
-          @NonNull String session, //
-          @NonNull String userName, //
-          @NonNull String newPassword //
-  ) {
-    return client().adminRespondToAuthChallenge(new AdminRespondToAuthChallengeRequest() //
-            .withChallengeName(challengeName) //
-            .withUserPoolId(awsSettings.getCognito().getPoolId()) //
-            .withClientId(awsSettings.getCognito().getClientId())//
-            .withSession(session) //
-            .withChallengeResponses(Map.of("USERNAME", userName, "NEW_PASSWORD", newPassword)));
+      @NonNull String challengeName, //
+      @NonNull String session, //
+      @NonNull String userName, //
+      @NonNull String newPassword //
+      ) {
+    return client()
+        .adminRespondToAuthChallenge(
+            new AdminRespondToAuthChallengeRequest() //
+                .withChallengeName(challengeName) //
+                .withUserPoolId(awsSettings.getCognito().getPoolId()) //
+                .withClientId(awsSettings.getCognito().getClientId()) //
+                .withSession(session) //
+                .withChallengeResponses(Map.of("USERNAME", userName, "NEW_PASSWORD", newPassword)));
   }
 
   public ChangePasswordResult changePassword( //
-          @NonNull String accessToken, //
-          @NonNull String currentPassword, //
-          @NonNull String newPassword //
-  ) {
-    return client().changePassword(new ChangePasswordRequest() //
-            .withAccessToken(accessToken) //
-            .withPreviousPassword(currentPassword) //
-            .withProposedPassword(newPassword));
+      @NonNull String accessToken, //
+      @NonNull String currentPassword, //
+      @NonNull String newPassword //
+      ) {
+    return client()
+        .changePassword(
+            new ChangePasswordRequest() //
+                .withAccessToken(accessToken) //
+                .withPreviousPassword(currentPassword) //
+                .withProposedPassword(newPassword));
   }
 
   public AdminResetUserPasswordResult forgotPassword(@NonNull String userName) {
-    val request = new AdminResetUserPasswordRequest() //
+    val request =
+        new AdminResetUserPasswordRequest() //
             .withUserPoolId(awsSettings.getCognito().getPoolId()) //
             .withUsername(userName);
     return client().adminResetUserPassword(request);
   }
 
   public ConfirmForgotPasswordResult confirmForgotPassword( //
-          @NonNull String userName, //
-          @NonNull String password, //
-          @NonNull String confirmationCode //
-  ) {
-    val request = new ConfirmForgotPasswordRequest() //
+      @NonNull String userName, //
+      @NonNull String password, //
+      @NonNull String confirmationCode //
+      ) {
+    val request =
+        new ConfirmForgotPasswordRequest() //
             .withClientId(awsSettings.getCognito().getClientId()) //
             .withUsername(userName) //
             .withPassword(password) //
@@ -151,27 +167,33 @@ public class CognitoHelper {
   }
 
   public AdminDisableUserResult disableUser(@NonNull String userName) {
-    val request = new AdminDisableUserRequest() //
+    val request =
+        new AdminDisableUserRequest() //
             .withUserPoolId(awsSettings.getCognito().getPoolId()) //
             .withUsername(userName);
     return client().adminDisableUser(request);
   }
 
   public AdminEnableUserResult enableUser(@NonNull String userName) {
-    val request = new AdminEnableUserRequest() //
+    val request =
+        new AdminEnableUserRequest() //
             .withUserPoolId(awsSettings.getCognito().getPoolId()) //
             .withUsername(userName);
     return client().adminEnableUser(request);
   }
 
-  public AdminUpdateUserAttributesResult changeEmail(@NonNull String userName, @NonNull String email) {
-    val emailAttribute = new AttributeType() //
+  public AdminUpdateUserAttributesResult changeEmail(
+      @NonNull String userName, @NonNull String email) {
+    val emailAttribute =
+        new AttributeType() //
             .withName("email") //
             .withValue(email);
-    val emailVerifiedAttribute = new AttributeType() //
+    val emailVerifiedAttribute =
+        new AttributeType() //
             .withName("email_verified") //
             .withValue("true");
-    val request = new AdminUpdateUserAttributesRequest() //
+    val request =
+        new AdminUpdateUserAttributesRequest() //
             .withUserPoolId(awsSettings.getCognito().getPoolId()) //
             .withUsername(userName) //
             .withUserAttributes(emailAttribute, emailVerifiedAttribute);

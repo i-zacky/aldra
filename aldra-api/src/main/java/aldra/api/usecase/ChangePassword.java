@@ -11,15 +11,14 @@ import com.amazonaws.services.cognitoidp.model.AdminInitiateAuthResult;
 import com.amazonaws.services.cognitoidp.model.AuthenticationResultType;
 import com.amazonaws.services.cognitoidp.model.NotAuthorizedException;
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
+import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -29,9 +28,11 @@ public class ChangePassword implements ChangePasswordApi {
   private final CognitoHelper cognitoHelper;
 
   @Override
-  public ResponseEntity<ChangePasswordResponse> execute(@RequestBody ChangePasswordRequest request) {
+  public ResponseEntity<ChangePasswordResponse> execute(
+      @RequestBody ChangePasswordRequest request) {
     // login current password
-    val username = SecurityContextHelper.getUsername() //
+    val username =
+        SecurityContextHelper.getUsername() //
             .orElseThrow(() -> ValidationException.withMessage("not found username"));
     AdminInitiateAuthResult authResult;
     try {
@@ -44,19 +45,21 @@ public class ChangePassword implements ChangePasswordApi {
       throw ApplicationException.withMessage("failed to change password");
     }
 
-    if (Objects.nonNull(authResult.getChallengeName()) || Objects.isNull(authResult.getAuthenticationResult())) {
+    if (Objects.nonNull(authResult.getChallengeName())
+        || Objects.isNull(authResult.getAuthenticationResult())) {
       throw ValidationException.withMessage("your password cannot change");
     }
 
     // change password
     try {
       cognitoHelper.changePassword( //
-              authResult.getAuthenticationResult().getAccessToken(), //
-              request.getCurrentPassword(), //
-              request.getNewPassword() //
-      );
+          authResult.getAuthenticationResult().getAccessToken(), //
+          request.getCurrentPassword(), //
+          request.getNewPassword() //
+          );
       val optional = Optional.ofNullable(authResult.getAuthenticationResult());
-      val response = new ChangePasswordResponse() //
+      val response =
+          new ChangePasswordResponse() //
               .idToken(optional.map(AuthenticationResultType::getIdToken).orElse(null)) //
               .refreshToken(optional.map(AuthenticationResultType::getRefreshToken).orElse(null));
       return ResponseEntity.ok(response);

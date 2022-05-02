@@ -1,6 +1,5 @@
 plugins {
-    id('java-library')
-    id('com.diffplug.spotless').version('6.0.5')
+    id('com.diffplug.spotless').version('6.5.0')
     id('org.flywaydb.flyway').version('8.3.0')
 }
 
@@ -9,21 +8,11 @@ configurations {
 }
 
 dependencies {
-    api('org.postgresql:postgresql:42.3.1')
-    api('org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0')
-    api('org.apache.commons:commons-lang3:3.12.0')
-    compileOnly('org.projectlombok:lombok:1.18.22')
-    annotationProcessor('org.projectlombok:lombok:1.18.22')
+    implementation('org.postgresql:postgresql:42.3.4')
+    implementation('org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2')
 
-    mbGenerate('org.postgresql:postgresql:42.3.1')
-    mbGenerate('org.mybatis.generator:mybatis-generator-core:1.4.0')
-
-    testImplementation('org.springframework.boot:spring-boot-starter-test:2.6.2')
-}
-
-java {
-    sourceCompatibility(JavaVersion.VERSION_11)
-    targetCompatibility(JavaVersion.VERSION_11)
+    mbGenerate('org.postgresql:postgresql:42.3.4')
+    mbGenerate('org.mybatis.generator:mybatis-generator-core:1.4.1')
 }
 
 sourceSets {
@@ -34,10 +23,6 @@ sourceSets {
     }
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding('UTF-8')
-}
-
 spotless {
     encoding('UTF-8')
     java {
@@ -46,7 +31,13 @@ spotless {
         removeUnusedImports()
         trimTrailingWhitespace()
         endWithNewline()
-        eclipse().configFile("${rootDir}/gradle/config/formatter.xml")
+        googleJavaFormat()
+    }
+    format 'xml', {
+        target('config/generator-config.xml', 'src/**/*.xml')
+        // https://github.com/prettier/plugin-xml
+        prettier(['prettier': '2.6.2', '@prettier/plugin-xml': '2.1.0'])
+            .config(['tabWidth': 4, 'printWidth': 120])
     }
 }
 

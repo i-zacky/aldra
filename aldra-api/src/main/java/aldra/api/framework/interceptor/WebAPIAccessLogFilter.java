@@ -1,18 +1,18 @@
 package aldra.api.framework.interceptor;
 
 import com.google.common.collect.ImmutableSet;
+import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.web.filter.ServletContextRequestLoggingFilter;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Set;
-
 @Slf4j
 public class WebAPIAccessLogFilter extends ServletContextRequestLoggingFilter {
 
-  private static final Set<String> LOGGING_HEADERS = ImmutableSet.<String>builder() //
+  private static final Set<String> LOGGING_HEADERS =
+      ImmutableSet.<String>builder() //
           .add("referer") //
           .add("origin") //
           .add("content-type") //

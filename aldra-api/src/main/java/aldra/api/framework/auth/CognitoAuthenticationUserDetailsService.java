@@ -26,9 +26,9 @@ public class CognitoAuthenticationUserDetailsService implements UserDetailsServi
     }
 
     return users.stream() //
-            .filter(UserType::getEnabled) //
-            .findFirst() //
-            .map(type -> AuthenticatedUser.authenticated(type.getUsername())) //
-            .orElseThrow(() -> new AuthException(ErrorCode.EAN0001_0001));
+        .filter(UserType::getEnabled) //
+        .findFirst() //
+        .map(type -> AuthenticatedUser.authenticated(type.getUsername())) //
+        .orElseThrow(() -> new AuthException(ErrorCode.EAN0001_0001));
   }
 }

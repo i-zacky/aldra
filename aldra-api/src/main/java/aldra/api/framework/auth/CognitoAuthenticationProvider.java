@@ -7,6 +7,8 @@ import com.amazonaws.services.cognitoidp.model.InvalidParameterException;
 import com.amazonaws.services.cognitoidp.model.NotAuthorizedException;
 import com.amazonaws.services.cognitoidp.model.PasswordResetRequiredException;
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
+import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -16,9 +18,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Objects;
-import java.util.Optional;
-
 @Slf4j
 @RequiredArgsConstructor
 public class CognitoAuthenticationProvider extends DaoAuthenticationProvider {
@@ -26,10 +25,13 @@ public class CognitoAuthenticationProvider extends DaoAuthenticationProvider {
   private final CognitoHelper cognitoHelper;
 
   @Override
-  protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+  protected void additionalAuthenticationChecks(
+      UserDetails userDetails, UsernamePasswordAuthenticationToken authentication)
+      throws AuthenticationException {
     AdminInitiateAuthResult initiateAuthResult;
     try {
-      initiateAuthResult = cognitoHelper.login(userDetails.getUsername(), (String) authentication.getCredentials());
+      initiateAuthResult =
+          cognitoHelper.login(userDetails.getUsername(), (String) authentication.getCredentials());
     } catch (NotAuthorizedException | UserNotFoundException | InvalidParameterException e) {
       log.info("failed to initiate auth", e);
       throw new AuthException(ErrorCode.EAN0001_0001);
@@ -48,9 +50,11 @@ public class CognitoAuthenticationProvider extends DaoAuthenticationProvider {
     }
 
     Optional.of(authentication) //
-            .ifPresent(token -> {
+        .ifPresent(
+            token -> {
               val result = initiateAuthResult.getAuthenticationResult();
-              val response = LoginResponse.builder() //
+              val response =
+                  LoginResponse.builder() //
                       .idToken(result.getIdToken()) //
                       .refreshToken(result.getRefreshToken()) //
                       .build();

@@ -1,28 +1,24 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
 plugins {
-    id('application')
-    id('org.springframework.boot').version('2.6.2')
-    id('com.diffplug.spotless').version('6.0.5')
-    id('org.openapi.generator').version('5.3.1')
+    id('org.springframework.boot').version('2.6.7')
+    id('com.diffplug.spotless').version('6.5.0')
+    id('org.openapi.generator').version('5.4.0')
 }
 
 dependencies {
-    implementation('org.springframework.boot:spring-boot-starter-web:2.6.2')
-    implementation('org.springframework.boot:spring-boot-starter-actuator:2.6.2')
-    implementation('org.springframework.boot:spring-boot-starter-security:2.6.2')
+    implementation('org.springframework.boot:spring-boot-starter-web:2.6.7')
+    implementation('org.springframework.boot:spring-boot-starter-actuator:2.6.7')
+    implementation('org.springframework.boot:spring-boot-starter-security:2.6.7')
+    implementation('org.springframework:spring-tx:5.3.19')
     // FIXME remove below dependencies
     // https://github.com/OpenAPITools/openapi-generator/issues/8719#issuecomment-806049990
-    implementation('org.springdoc:springdoc-openapi-ui:1.6.3')
-    compileOnly('org.projectlombok:lombok:1.18.22')
-    annotationProcessor('org.projectlombok:lombok:1.18.22')
+    implementation('org.springdoc:springdoc-openapi-ui:1.6.8')
+    implementation('com.amazonaws:aws-java-sdk-cognitoidp:1.12.210')
+    implementation('com.auth0:java-jwt:3.19.1')
+    implementation('com.auth0:jwks-rsa:0.21.1')
     implementation(project(':aldra-common'))
     implementation(project(':aldra-database'))
-
-    testImplementation('org.springframework.boot:spring-boot-starter-test:2.6.2')
-}
-
-java {
-    sourceCompatibility(JavaVersion.VERSION_11)
-    targetCompatibility(JavaVersion.VERSION_11)
 }
 
 sourceSets {
@@ -33,23 +29,20 @@ sourceSets {
     }
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding('UTF-8')
-}
-
 spotless {
     encoding('UTF-8')
     java {
+        targetExclude('build/openapi/gen-src/main/java/**')
         indentWithSpaces()
         removeUnusedImports()
         trimTrailingWhitespace()
         endWithNewline()
-        eclipse().configFile("${rootDir}/gradle/config/formatter.xml")
+        googleJavaFormat()
     }
 }
 
 // see. https://openapi-generator.tech/docs/plugins#gradle
-task oaGenerate(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+task oaGenerate(type: GenerateTask) {
     generatorName = 'spring'
     inputSpec = "${projectDir}/openapi/index.yml"
     outputDir = "${buildDir}/openapi"

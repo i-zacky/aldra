@@ -29,7 +29,9 @@ public class UpdateStaff implements UpdateStaffApi {
   @PreAuthorize("hasAuthority('UpdateStaff')")
   @Override
   public ResponseEntity<Void> execute(@RequestBody UpdateStaffRequest request) {
-    val staff = staffMapper.findById(request.getId()) //
+    val staff =
+        staffMapper
+            .findById(request.getId()) //
             .orElseThrow(() -> ValidationException.withMessage("not found staff"));
 
     // update cognito user pool

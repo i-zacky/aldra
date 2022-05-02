@@ -11,6 +11,7 @@ import com.amazonaws.services.cognitoidp.model.AdminRespondToAuthChallengeResult
 import com.amazonaws.services.cognitoidp.model.AuthenticationResultType;
 import com.amazonaws.services.cognitoidp.model.NotAuthorizedException;
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -18,8 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -29,7 +28,8 @@ public class ChangeTemporaryPassword implements ChangeTemporaryPasswordApi {
   private final CognitoHelper cognitoHelper;
 
   @Override
-  public ResponseEntity<ChangeTemporaryPasswordResponse> execute(@RequestBody ChangeTemporaryPasswordRequest request) {
+  public ResponseEntity<ChangeTemporaryPasswordResponse> execute(
+      @RequestBody ChangeTemporaryPasswordRequest request) {
     // login by temporary password
     AdminInitiateAuthResult authResult;
     try {
@@ -48,14 +48,16 @@ public class ChangeTemporaryPassword implements ChangeTemporaryPasswordApi {
 
     // change temporary password
     try {
-      AdminRespondToAuthChallengeResult result = cognitoHelper.changeTemporaryPassword( //
+      AdminRespondToAuthChallengeResult result =
+          cognitoHelper.changeTemporaryPassword( //
               authResult.getChallengeName(), //
               authResult.getSession(), //
               request.getEmail(), //
               request.getNewPassword());
 
       val optional = Optional.ofNullable(result.getAuthenticationResult());
-      val response = new ChangeTemporaryPasswordResponse() //
+      val response =
+          new ChangeTemporaryPasswordResponse() //
               .idToken(optional.map(AuthenticationResultType::getIdToken).orElse(null)) //
               .refreshToken(optional.map(AuthenticationResultType::getRefreshToken).orElse(null));
       return ResponseEntity.ok(response);

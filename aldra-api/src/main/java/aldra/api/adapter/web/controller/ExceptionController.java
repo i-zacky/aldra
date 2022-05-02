@@ -25,10 +25,10 @@ public class ExceptionController {
   @ResponseBody
   public ApplicationExceptionResponse handleApplicationException(ApplicationException exception) {
     return ApplicationExceptionResponse.builder() //
-            .error(ErrorCode.EAP0001_0001) //
-            .message(exception.getMessage()) //
-            .data(exception.getResponse()) //
-            .build();
+        .error(ErrorCode.EAP0001_0001) //
+        .message(exception.getMessage()) //
+        .data(exception.getResponse()) //
+        .build();
   }
 
   @ExceptionHandler(ValidationException.class)
@@ -36,9 +36,9 @@ public class ExceptionController {
   @ResponseBody
   public ValidationExceptionResponse handleValidationException(ValidationException exception) {
     return ValidationExceptionResponse.builder() //
-            .error(ErrorCode.EV0001_0001) //
-            .messages(exception.getMessages()) //
-            .build();
+        .error(ErrorCode.EV0001_0001) //
+        .messages(exception.getMessages()) //
+        .build();
   }
 
   @ExceptionHandler(AccessDeniedException.class)
@@ -46,8 +46,8 @@ public class ExceptionController {
   @ResponseBody
   public ExceptionResponseBase handleAccessDeniedException(AccessDeniedException exception) {
     return ExceptionResponseBase.builder() //
-            .error(ErrorCode.EAZ0002_0001) //
-            .build();
+        .error(ErrorCode.EAZ0002_0001) //
+        .build();
   }
 
   @ExceptionHandler(Exception.class)
@@ -55,8 +55,8 @@ public class ExceptionController {
   @ResponseBody
   public ApplicationExceptionResponse handleException(Exception exception) {
     return ApplicationExceptionResponse.builder() //
-            .error(ErrorCode.ES0000_0000) //
-            .message(exception.getMessage()) //
-            .build();
+        .error(ErrorCode.ES0000_0000) //
+        .message(exception.getMessage()) //
+        .build();
   }
 }

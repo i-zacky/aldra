@@ -22,7 +22,8 @@ public class ResetPassword implements ResetPasswordApi {
   @Override
   public ResponseEntity<Void> execute(@RequestBody ResetPasswordRequest request) {
     try {
-      cognitoHelper.confirmForgotPassword(request.getEmail(), request.getNewPassword(), request.getConfirmationCode());
+      cognitoHelper.confirmForgotPassword(
+          request.getEmail(), request.getNewPassword(), request.getConfirmationCode());
       log.info("confirm forgot password was succeed. email={}", request.getEmail());
       return ResponseEntity.ok().build();
     } catch (ExpiredCodeException e) {

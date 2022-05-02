@@ -2,16 +2,16 @@ package aldra.database.settings;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import javax.sql.DataSource;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import javax.sql.DataSource;
-
-@MapperScan(basePackages = { //
-    "aldra.database.domain.repository", //
-})
+@MapperScan(
+    basePackages = { //
+      "aldra.database.domain.repository", //
+    })
 public class DataSourceSettings {
 
   @Bean(name = "dataSourceProperties")
@@ -21,7 +21,8 @@ public class DataSourceSettings {
   }
 
   @Bean(name = "dataSource")
-  public DataSource dataSource(@Qualifier("dataSourceProperties") final DataSourceProperties props) {
+  public DataSource dataSource(
+      @Qualifier("dataSourceProperties") final DataSourceProperties props) {
     HikariConfig config = new HikariConfig();
     config.setDriverClassName(props.getDriverClassName());
     config.setJdbcUrl(props.getUrl());

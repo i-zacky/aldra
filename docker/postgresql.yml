@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.9'
 
 services:
   aldra-db:
@@ -10,9 +10,9 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
-      TZ: "Asia/Tokyo"
+      TZ: 'Asia/Tokyo'
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - aldra-db-data:/var/lib/postgresql/data
     networks:

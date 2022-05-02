@@ -1,40 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
-
+    "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-    <context id="aldra-db" defaultModelType="hierarchical" targetRuntime="MyBatis3">
-        <property name="javaFileEncoding" value="UTF-8"/>
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
-        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
-        <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
-        <commentGenerator>
-            <property name="suppressDate" value="true"/>
-        </commentGenerator>
-        <jdbcConnection
-            driverClass="${driverClassName}"
-            connectionURL="${url}"
-            userId="${username}"
-            password="${password}"
-        />
-        <javaTypeResolver>
-            <property name="forceBigDecimals" value="true"/>
-            <property name="useJSR310Types" value="true"/>
-        </javaTypeResolver>
-        <javaModelGenerator
-            targetPackage="${targetEntityPackage}"
-            targetProject="${targetProject}"
-        />
-        <sqlMapGenerator
-            targetPackage="${targetMapperPackage}"
-            targetProject="${targetProject}"
-        />
-        <javaClientGenerator
-            type="ANNOTATEDMAPPER"
-            targetPackage="${targetMapperPackage}"
-            targetProject="${targetProject}"
-        />
-        <table
+	<context id="aldra-db" defaultModelType="hierarchical" targetRuntime="MyBatis3">
+		<property name="javaFileEncoding" value="UTF-8" />
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin" />
+		<plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin" />
+		<commentGenerator>
+			<property name="suppressDate" value="true" />
+		</commentGenerator>
+		<jdbcConnection driverClass="${driverClassName}" connectionURL="${url}" userId="${username}" password="${password}" />
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="true" />
+			<property name="useJSR310Types" value="true" />
+		</javaTypeResolver>
+		<javaModelGenerator targetPackage="${targetEntityPackage}" targetProject="${targetProject}" />
+		<sqlMapGenerator targetPackage="${targetMapperPackage}" targetProject="${targetProject}" />
+		<javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="${targetMapperPackage}" targetProject="${targetProject}" />
+		<table
             tableName="sandbox"
             domainObjectName="system.gen.Sandbox"
             mapperName="system.gen.SandboxMapperDefault"
@@ -45,7 +29,7 @@
             enableCountByExample="false"
             enableUpdateByExample="false"
         />
-        <table
+		<table
             tableName="fixed_clock"
             domainObjectName="system.gen.FixedClock"
             mapperName="system.gen.FixedClockMapperDefault"
@@ -56,7 +40,7 @@
             enableCountByExample="false"
             enableUpdateByExample="false"
         />
-        <table
+		<table
             tableName="staff"
             domainObjectName="user.gen.Staff"
             mapperName="user.gen.StaffMapperDefault"
@@ -67,7 +51,7 @@
             enableCountByExample="false"
             enableUpdateByExample="false"
         />
-        <table
+		<table
             tableName="role"
             domainObjectName="user.gen.Role"
             mapperName="user.gen.RoleMapperDefault"
@@ -78,7 +62,7 @@
             enableCountByExample="false"
             enableUpdateByExample="false"
         />
-        <table
+		<table
             tableName="authority"
             domainObjectName="user.gen.Authority"
             mapperName="user.gen.AuthorityMapperDefault"
@@ -89,5 +73,5 @@
             enableCountByExample="false"
             enableUpdateByExample="false"
         />
-    </context>
+	</context>
 </generatorConfiguration>

@@ -20,7 +20,8 @@ public class Logout implements LogoutApi {
 
   @Override
   public ResponseEntity<Void> execute() {
-    val username = SecurityContextHelper.getUsername() //
+    val username =
+        SecurityContextHelper.getUsername() //
             .orElseThrow(() -> ValidationException.withMessage("not found username"));
     try {
       cognitoHelper.logout(username);

@@ -1,10 +1,9 @@
 package aldra.common.utils;
 
+import java.io.File;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-
-import java.io.File;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SystemPropertyUtils {

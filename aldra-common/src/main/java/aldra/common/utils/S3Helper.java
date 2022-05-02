@@ -11,14 +11,6 @@ import com.amazonaws.services.s3.model.DeleteObjectsRequest;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.google.common.base.Joiner;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +19,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -37,9 +36,11 @@ public class S3Helper {
 
   private AmazonS3 client() {
     return AmazonS3ClientBuilder.standard() //
-            .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(awsSettings.getS3().getEndpointUrl(), awsSettings.getS3().getRegion())) //
-            .withCredentials(new AWSStaticCredentialsProvider(awsSettings.getCredentials())) //
-            .build();
+        .withEndpointConfiguration(
+            new AwsClientBuilder.EndpointConfiguration(
+                awsSettings.getS3().getEndpointUrl(), awsSettings.getS3().getRegion())) //
+        .withCredentials(new AWSStaticCredentialsProvider(awsSettings.getCredentials())) //
+        .build();
   }
 
   public boolean exist(@NonNull String objectName) {
@@ -51,27 +52,44 @@ public class S3Helper {
   }
 
   public String generatePreSignedURL(@NonNull String objectName) {
-    return generatePreSignedURL(HttpMethod.GET, awsSettings.getS3().getExpirationSeconds(), awsSettings.getS3().getDataBucket(), objectName);
+    return generatePreSignedURL(
+        HttpMethod.GET,
+        awsSettings.getS3().getExpirationSeconds(),
+        awsSettings.getS3().getDataBucket(),
+        objectName);
   }
 
   public String generatePreSignedURL(@NonNull String bucketName, @NonNull String objectName) {
-    return generatePreSignedURL(HttpMethod.GET, awsSettings.getS3().getExpirationSeconds(), bucketName, objectName);
+    return generatePreSignedURL(
+        HttpMethod.GET, awsSettings.getS3().getExpirationSeconds(), bucketName, objectName);
   }
 
   public String generatePreSignedURL(@NonNull HttpMethod method, @NonNull String objectName) {
-    return generatePreSignedURL(method, awsSettings.getS3().getExpirationSeconds(), awsSettings.getS3().getDataBucket(), objectName);
+    return generatePreSignedURL(
+        method,
+        awsSettings.getS3().getExpirationSeconds(),
+        awsSettings.getS3().getDataBucket(),
+        objectName);
   }
 
-  public String generatePreSignedURL(@NonNull HttpMethod method, @NonNull String bucketName, @NonNull String objectName) {
-    return generatePreSignedURL(method, awsSettings.getS3().getExpirationSeconds(), bucketName, objectName);
+  public String generatePreSignedURL(
+      @NonNull HttpMethod method, @NonNull String bucketName, @NonNull String objectName) {
+    return generatePreSignedURL(
+        method, awsSettings.getS3().getExpirationSeconds(), bucketName, objectName);
   }
 
-  public String generatePreSignedURL(@NonNull HttpMethod method, long expiry, @NonNull String bucketName, @NonNull String objectName) {
-    val key = Optional.of(objectName) //
+  public String generatePreSignedURL(
+      @NonNull HttpMethod method,
+      long expiry,
+      @NonNull String bucketName,
+      @NonNull String objectName) {
+    val key =
+        Optional.of(objectName) //
             .map(o -> StringUtils.removeStart(o, "/")) //
             .map(o -> StringUtils.removeEnd(o, "/")) //
             .orElseThrow(ApplicationException::newInstance);
-    val request = new GeneratePresignedUrlRequest(bucketName, key, method) //
+    val request =
+        new GeneratePresignedUrlRequest(bucketName, key, method) //
             .withExpiration(Date.from(ZonedDateTime.now().plusSeconds(expiry).toInstant()));
     return client().generatePresignedUrl(request).toString();
   }
@@ -81,11 +99,12 @@ public class S3Helper {
   }
 
   public List<String> listObjectName(@NonNull String bucketName, String prefix) {
-    return client().listObjects(bucketName, prefix) //
-            .getObjectSummaries() //
-            .stream() //
-            .map(S3ObjectSummary::getKey) //
-            .collect(Collectors.toList());
+    return client()
+        .listObjects(bucketName, prefix) //
+        .getObjectSummaries() //
+        .stream() //
+        .map(S3ObjectSummary::getKey) //
+        .collect(Collectors.toList());
   }
 
   public byte[] getObject(@NonNull String objectName) {
@@ -102,7 +121,8 @@ public class S3Helper {
   }
 
   public InputStream getObjectStream(@NonNull String bucketName, @NonNull String objectName) {
-    val key = Optional.of(objectName) //
+    val key =
+        Optional.of(objectName) //
             .map(o -> StringUtils.removeStart(o, "/")) //
             .map(o -> StringUtils.removeEnd(o, "/")) //
             .orElseThrow(ApplicationException::newInstance);
@@ -118,7 +138,8 @@ public class S3Helper {
   }
 
   public void putObject(File file, @NonNull String bucketName, @NonNull String objectName) {
-    val key = Optional.of(objectName) //
+    val key =
+        Optional.of(objectName) //
             .map(p -> StringUtils.removeStart(p, "/")) //
             .map(p -> StringUtils.removeEnd(p, "/")) //
             .orElseThrow(ApplicationException::newInstance);
@@ -130,7 +151,8 @@ public class S3Helper {
   }
 
   public void deleteObjects(@NonNull String bucketName, @NonNull List<String> objectNames) {
-    val keys = objectNames.stream() //
+    val keys =
+        objectNames.stream() //
             .map(o -> StringUtils.removeStart(o, "/")) //
             .map(o -> StringUtils.removeEnd(o, "/")) //
             .map(DeleteObjectsRequest.KeyVersion::new) //
@@ -139,12 +161,23 @@ public class S3Helper {
     client().deleteObjects(request);
   }
 
-  public void sync(String sourceBucketName, String sourcePrefix, String destinationBucketName, String destinationPrefix) {
+  public void sync(
+      String sourceBucketName,
+      String sourcePrefix,
+      String destinationBucketName,
+      String destinationPrefix) {
     deleteObjects(destinationBucketName, List.of(destinationPrefix));
-    listObjectName(sourceBucketName, sourcePrefix).forEach(sourceKey -> {
-      val array = sourceKey.split("/");
-      val objectName = array[array.length - 1];
-      client().copyObject(sourceBucketName, sourceKey, destinationBucketName, Joiner.on("/").join(destinationPrefix, objectName));
-    });
+    listObjectName(sourceBucketName, sourcePrefix)
+        .forEach(
+            sourceKey -> {
+              val array = sourceKey.split("/");
+              val objectName = array[array.length - 1];
+              client()
+                  .copyObject(
+                      sourceBucketName,
+                      sourceKey,
+                      destinationBucketName,
+                      Joiner.on("/").join(destinationPrefix, objectName));
+            });
   }
 }

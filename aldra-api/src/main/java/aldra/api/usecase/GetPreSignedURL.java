@@ -19,12 +19,14 @@ public class GetPreSignedURL implements GetPreSignedUrlApi {
   private final S3Helper s3Helper;
 
   @Override
-  public ResponseEntity<GetPreSignedURLResponse> execute(@RequestParam("fileName") String fileName) {
+  public ResponseEntity<GetPreSignedURLResponse> execute(
+      @RequestParam("fileName") String fileName) {
     if (!s3Helper.exist(fileName)) {
       throw ValidationException.withMessage("does not exist file");
     }
 
-    val response = new GetPreSignedURLResponse() //
+    val response =
+        new GetPreSignedURLResponse() //
             .url(s3Helper.generatePreSignedURL(fileName));
     return ResponseEntity.ok(response);
   }

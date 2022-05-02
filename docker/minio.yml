@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.9'
 
 services:
   aldra-s3:
@@ -15,10 +15,10 @@ services:
       - aldra-s3-data:/data
     networks:
       - aldra
-    command: [ 'server', '/data', '--console-address', ':9001' ]
+    command: ['server', '/data', '--console-address', ':9001']
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live" ]
-      interval: 30s
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 10s
       timeout: 20s
       retries: 3
 
@@ -32,7 +32,8 @@ services:
     networks:
       - aldra
     depends_on:
-      - aldra-s3
+      aldra-s3:
+        condition: service_healthy
     entrypoint: >
       /bin/bash -c "
       /usr/bin/mc mb s3/$${DATA_BUCKET} --region=$${REGION} --ignore-existing;

@@ -9,8 +9,8 @@ public class EntryPoint {
 
   public static void main(String[] args) {
     new SpringApplicationBuilder(ServerConfiguration.class) //
-            .bannerMode(Banner.Mode.OFF) //
-            .main(EntryPoint.class) //
-            .run(args);
+        .bannerMode(Banner.Mode.OFF) //
+        .main(EntryPoint.class) //
+        .run(args);
   }
 }
