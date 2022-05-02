@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="aldra.database.domain.repository.user.StaffMapper">
-	<select id="findById" parameterType="java.lang.Integer" resultType="aldra.database.domain.entity.user.gen.Staff">
-		SELECT *
-		FROM staff
-		WHERE id = #{id}
-	</select>
-	<insert
+    <select
+        id="findById"
+        parameterType="java.lang.Integer"
+        resultType="aldra.database.domain.entity.user.gen.Staff"
+    >
+        SELECT *
+        FROM staff
+        WHERE id = #{id}
+    </select>
+    <insert
         id="insertOne"
         useGeneratedKeys="true"
         keyProperty="id"
         parameterType="aldra.database.domain.entity.user.gen.Staff"
     >
-		INSERT INTO staff (
-			name,
-			role_id
-		) VALUES (
-			#{entity.name},
-			#{entity.roleId}
-		)
-	</insert>
-	<update id="update" parameterType="aldra.database.domain.entity.user.gen.Staff">
-		UPDATE staff
-		SET role_id = #{entity.roleId},
-			updated_at = #{entity.updatedAt}
-		WHERE id = #{entity.id}
-	</update>
+        INSERT INTO staff (
+            name,
+            role_id
+        ) VALUES (
+            #{entity.name},
+            #{entity.roleId}
+        )
+    </insert>
+    <update
+        id="update"
+        parameterType="aldra.database.domain.entity.user.gen.Staff"
+    >
+        UPDATE staff
+        SET role_id = #{entity.roleId},
+            updated_at = #{entity.updatedAt}
+        WHERE id = #{entity.id}
+    </update>
 </mapper>

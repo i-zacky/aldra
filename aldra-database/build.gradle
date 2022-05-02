@@ -36,8 +36,14 @@ spotless {
     format 'xml', {
         target('config/generator-config.xml', 'src/**/*.xml')
         // https://github.com/prettier/plugin-xml
-        prettier(['prettier': '2.6.2', '@prettier/plugin-xml': '2.1.0'])
-            .config(['tabWidth': 4, 'printWidth': 120])
+        prettier(['@prettier/plugin-xml': '2.1.0'])
+            .config([
+                'useTabs': false,
+                'tabWidth': 4,
+                'printWidth': 120,
+                'xmlWhitespaceSensitivity': 'strict',
+                'singleAttributePerLine': true
+            ])
     }
 }
 
