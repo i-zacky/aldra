@@ -24,9 +24,23 @@ Database implementation (use MyBatis)
 
 ### System / Tools
 
-- Java11
+- Java17
+  ```sh
+  $ java --version
+  openjdk 17.0.3 2022-04-19
+  OpenJDK Runtime Environment Temurin-17.0.3+7 (build 17.0.3+7)
+  OpenJDK 64-Bit Server VM Temurin-17.0.3+7 (build 17.0.3+7, mixed mode, sharing)
+  ```
 - Docker
+  ```sh
+  $ docker --version
+  Docker version 20.10.12, build e91ed57
+  ```
 - direnv
+  ```sh
+  $ direnv --version
+  2.28.0
+  ```
 
 ## Setup
 
