@@ -1,6 +1,11 @@
 rootProject.name = 'aldra'
 
-include('aldra-api')
-include('aldra-batch')
-include('aldra-common')
-include('aldra-database')
+include('api')
+include('batch')
+include('common')
+include('database')
+
+project(':api').projectDir = new File('aldra-api')
+project(':batch').projectDir = new File('aldra-batch')
+project(':common').projectDir = new File('aldra-common')
+project(':database').projectDir = new File('aldra-database')

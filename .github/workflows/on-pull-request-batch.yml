@@ -1,0 +1,39 @@
+name: '[batch] Check on Pull Request'
+
+on:
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'aldra-batch/**'
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    env:
+      COMPOSE_FILE: docker/postgresql.yml
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_NAME: aldra_dev
+      DB_USER: app
+      DB_PASSWORD: BX3R7blD2UiPiM9F
+      DB_JDBC_DRIVER: org.postgresql.Driver
+      DB_JDBC_URL: jdbc:postgresql://127.0.0.1:5432/aldra_dev
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Run Spotless Check
+        run: ./gradlew :batch:spotlessCheck
+      - name: Run Docker Containers
+        run: docker-compose up -d --build
+      - name: Run Flyway Migrate
+        run: ./gradlew :database:flywayMigrate
+      - name: Run MyBatis Generator
+        run: ./gradlew :database:mbGenerate
+      - name: Build aldra-api
+        run: ./gradlew :batch:build
