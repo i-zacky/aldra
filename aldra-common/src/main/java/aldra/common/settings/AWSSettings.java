@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
@@ -27,9 +26,8 @@ public class AWSSettings {
   private final Environment environment;
 
   public AWSCredentials getCredentials() {
-    val isLocal =
-        Arrays.stream(environment.getActiveProfiles()) //
-            .anyMatch(profile -> StringUtils.containsAny(profile, "local", "ut"));
+    val profiles = Arrays.asList(environment.getActiveProfiles());
+    val isLocal = profiles.contains("local") || profiles.contains("ut");
     if (isLocal) {
       val accessKey = general.getAccessKeyId();
       val secretAccessKey = general.getSecretAccessKey();
