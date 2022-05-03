@@ -3,17 +3,19 @@ version: '3.9'
 services:
   schemaspy:
     container_name: aldra-schemaspy
-    image: schemaspy/schemaspy:6.1.0
+    build:
+      context: schemaspy
     depends_on:
       db:
         condition: service_started
     volumes:
-      - ./schemaspy/drivers:/drivers
       - ./schemaspy/output:/output
     command: >
-      java -jar schemaspy.jar
+      java -jar /usr/local/lib/schemaspy/schemaspy.jar
          -t pgsql11
          -dp /drivers
+         -o /output
+         -hq
          -host aldra-db
          -port ${DB_PORT}
          -db ${DB_NAME}
