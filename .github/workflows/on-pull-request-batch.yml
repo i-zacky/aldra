@@ -35,5 +35,5 @@ jobs:
         run: ./gradlew :database:flywayMigrate
       - name: Run MyBatis Generator
         run: ./gradlew :database:mbGenerate
-      - name: Build aldra-api
+      - name: Build aldra-batch
         run: ./gradlew :batch:build

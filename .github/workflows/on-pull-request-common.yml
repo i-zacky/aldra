@@ -20,5 +20,5 @@ jobs:
           cache: gradle
       - name: Run Spotless Check
         run: ./gradlew :common:spotlessCheck
-      - name: Build aldra-api
+      - name: Build aldra-common
         run: ./gradlew :common:build
