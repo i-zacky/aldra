@@ -14,7 +14,7 @@ dependencies {
     // FIXME remove below dependencies
     // https://github.com/OpenAPITools/openapi-generator/issues/8719#issuecomment-806049990
     implementation('org.springdoc:springdoc-openapi-ui:1.6.9')
-    implementation('com.amazonaws:aws-java-sdk-cognitoidp:1.12.233')
+    implementation('com.amazonaws:aws-java-sdk-cognitoidp:1.12.238')
     implementation('com.auth0:java-jwt:3.19.2')
     implementation('com.auth0:jwks-rsa:0.21.1')
     implementation(project(':common'))
