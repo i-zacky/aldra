@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     implementation('org.springframework.boot:spring-boot-configuration-processor:2.7.1')
-    implementation('org.springframework.boot:spring-boot-autoconfigure:2.7.0')
+    implementation('org.springframework.boot:spring-boot-autoconfigure:2.7.1')
     implementation('org.springframework.boot:spring-boot-starter-logging:2.7.0')
     implementation('com.amazonaws:aws-java-sdk-cognitoidp:1.12.248')
     implementation('com.amazonaws:aws-java-sdk-s3:1.12.243')
