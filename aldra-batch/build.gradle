@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation('org.springframework.boot:spring-boot-starter-batch:2.7.0')
+    implementation('org.springframework.boot:spring-boot-starter-batch:2.7.1')
     implementation(project(':common'))
     implementation(project(':database'))
 }
