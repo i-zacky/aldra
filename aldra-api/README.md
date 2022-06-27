@@ -5,10 +5,10 @@
 ### Generate Controller / DTO classes by OpenAPI Generator
 
 ```sh
-$ ./gradlew :aldra-api:oaGenerate
+$ ./gradlew :api:oaGenerate
 
 # the following steps will no longer be necessary
-$ ./gradlew :aldra-api:spotlessApply
+$ ./gradlew :api:spotlessApply
 ```
 
 ## Launch Application
@@ -16,13 +16,13 @@ $ ./gradlew :aldra-api:spotlessApply
 ### Gradle 
 
 ```sh
-$ ./gradlew :aldra-api:bootRun
+$ ./gradlew :api:bootRun
 ```
 
 ### Docker
 
 ```sh
-$ ./gradlew :aldra-api:bootBuildImage --imageName {repository:tag}
+$ ./gradlew :api:bootBuildImage --imageName {repository:tag}
 $ docker run {repository:tag} --name aldra-api -p 8080:8080 \
     --network aldra \
     -e DB_JDBC_DRIVER='org.postgresql.Driver' \

@@ -20,14 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.val;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.web.cors.CorsConfiguration;
@@ -41,7 +41,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
     prePostEnabled = true, //
     securedEnabled = true //
     )
-public class SecuritySettings extends WebSecurityConfigurerAdapter {
+public class SecuritySettings {
 
   private final CORSProperties corsProperties;
 
@@ -51,28 +51,24 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
 
   private final AuthorityMapper authorityMapper;
 
-  @Override
-  public void configure(WebSecurity web) {
-    web.ignoring() //
-        .antMatchers("/actuator/health");
+  @Bean
+  public WebSecurityCustomizer webSecurityCustomizer() {
+    return web ->
+        web.ignoring() //
+            .antMatchers("/actuator/health");
   }
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) {
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     // for protected endpoint
     val preAuthProvider = new PreAuthenticatedAuthenticationProvider();
     preAuthProvider.setPreAuthenticatedUserDetailsService(
         new JWTAuthorizationUserDetailsService(awsSettings, authorityMapper));
-    auth.authenticationProvider(preAuthProvider);
     // for authentication endpoint
     val authenticationProvider = new CognitoAuthenticationProvider(cognitoHelper);
     authenticationProvider.setUserDetailsService(
         new CognitoAuthenticationUserDetailsService(cognitoHelper));
-    auth.authenticationProvider(authenticationProvider);
-  }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
     http.csrf()
         .disable() //
         .cors()
@@ -95,7 +91,11 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
         .and() //
         .addFilterAt(cognitoAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) //
         .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class) //
-        .addFilterBefore(new WebAPIAccessLogFilter(), UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(
+            new WebAPIAccessLogFilter(), UsernamePasswordAuthenticationFilter.class) //
+        .authenticationProvider(preAuthProvider) //
+        .authenticationProvider(authenticationProvider);
+    return http.build();
   }
 
   private CorsConfigurationSource corsConfigurationSource() {
@@ -112,7 +112,6 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
   @SneakyThrows
   private Filter cognitoAuthenticationFilter() {
     val filter = new CognitoAuthenticationFilter(VERSION + "/public/login", "POST");
-    filter.setAuthenticationManager(authenticationManager());
     filter.setAuthenticationSuccessHandler(new CognitoAuthenticationSuccessHandler());
     filter.setAuthenticationFailureHandler(new AuthFailureHandler());
     return filter;
@@ -121,7 +120,6 @@ public class SecuritySettings extends WebSecurityConfigurerAdapter {
   @SneakyThrows
   private Filter jwtAuthorizationFilter() {
     val filter = new JWTAuthorizationFilter(VERSION + "/protected/**");
-    filter.setAuthenticationManager(authenticationManager());
     filter.setAuthenticationSuccessHandler(
         (req, res, auth) -> res.setStatus(HttpServletResponse.SC_OK));
     filter.setAuthenticationFailureHandler(new AuthFailureHandler());

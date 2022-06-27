@@ -54,6 +54,6 @@ $ direnv allow
 ### Launch middleware
 
 ```sh
-$ docker-compose build
-$ docker-compose up -d
+$ docker compose build
+$ docker compose up -d
 ```
