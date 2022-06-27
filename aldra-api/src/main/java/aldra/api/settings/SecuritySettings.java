@@ -58,7 +58,6 @@ public class SecuritySettings {
             .antMatchers("/actuator/health");
   }
 
-
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     // for protected endpoint
