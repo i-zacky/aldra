@@ -10,7 +10,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web:2.7.1')
     implementation('org.springframework.boot:spring-boot-starter-actuator:2.7.1')
     implementation('org.springframework.boot:spring-boot-starter-security:2.7.1')
-    implementation('org.springframework:spring-tx:5.3.21')
+    implementation('org.springframework:spring-tx:5.3.22')
     // FIXME remove below dependencies
     // https://github.com/OpenAPITools/openapi-generator/issues/8719#issuecomment-806049990
     implementation('org.springdoc:springdoc-openapi-ui:1.6.9')
