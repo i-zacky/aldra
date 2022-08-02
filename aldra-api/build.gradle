@@ -15,7 +15,7 @@ dependencies {
     implementation('io.swagger.core.v3:swagger-annotations:2.2.2')
     // FIXME https://github.com/OpenAPITools/openapi-generator/issues/12603
     implementation('jakarta.validation:jakarta.validation-api:2.0.2')
-    implementation('com.amazonaws:aws-java-sdk-cognitoidp:1.12.272')
+    implementation('com.amazonaws:aws-java-sdk-cognitoidp:1.12.273')
     implementation('com.auth0:java-jwt:4.0.0')
     implementation('com.auth0:jwks-rsa:0.21.1')
     implementation(project(':common'))
