@@ -22,6 +22,8 @@ import lombok.SneakyThrows;
 import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -59,7 +61,7 @@ public class SecuritySettings {
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  public AuthenticationManager authenticationManager() {
     // for protected endpoint
     val preAuthProvider = new PreAuthenticatedAuthenticationProvider();
     preAuthProvider.setPreAuthenticatedUserDetailsService(
@@ -68,33 +70,39 @@ public class SecuritySettings {
     val authenticationProvider = new CognitoAuthenticationProvider(cognitoHelper);
     authenticationProvider.setUserDetailsService(
         new CognitoAuthenticationUserDetailsService(cognitoHelper));
+    return new ProviderManager(preAuthProvider, authenticationProvider);
+  }
 
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf()
-        .disable() //
+        .disable()
         .cors()
-        .configurationSource(corsConfigurationSource()) //
-        .and() //
+        .configurationSource(corsConfigurationSource())
+        .and()
         .formLogin()
-        .disable() //
+        .disable()
         .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //
-        .and() //
-        .authorizeRequests() //
-        .antMatchers(VERSION + "/public/**")
-        .permitAll() //
-        .antMatchers(VERSION + "/protected/**")
-        .authenticated() //
-        .and() //
-        .exceptionHandling() //
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authorizeHttpRequests(
+            auth ->
+                auth.antMatchers("/actuator/health")
+                    .permitAll()
+                    .antMatchers(VERSION + "/public/**")
+                    .permitAll()
+                    .antMatchers(VERSION + "/protected/**")
+                    .authenticated()
+                    .and()
+                    .addFilterAt(
+                        cognitoAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(
+                        jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(
+                        new WebAPIAccessLogFilter(), UsernamePasswordAuthenticationFilter.class))
+        .exceptionHandling()
         .authenticationEntryPoint(
-            (req, res, ex) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED)) //
-        .and() //
-        .addFilterAt(cognitoAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) //
-        .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class) //
-        .addFilterBefore(
-            new WebAPIAccessLogFilter(), UsernamePasswordAuthenticationFilter.class) //
-        .authenticationProvider(preAuthProvider) //
-        .authenticationProvider(authenticationProvider);
+            (req, res, ex) -> res.setStatus(HttpServletResponse.SC_UNAUTHORIZED));
     return http.build();
   }
 

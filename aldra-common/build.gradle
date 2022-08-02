@@ -1,7 +1,8 @@
 plugins {
-    id('com.diffplug.spotless').version('6.5.0')
+    id('com.diffplug.spotless').version('6.8.0')
 }
 
+apply from: "${rootDir}/gradle/common-dependencies/build.gradle"
 dependencies {
     implementation('org.springframework.boot:spring-boot-configuration-processor:2.7.2')
     implementation('org.springframework.boot:spring-boot-autoconfigure:2.7.2')

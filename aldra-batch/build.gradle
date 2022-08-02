@@ -1,8 +1,9 @@
 plugins {
-    id('org.springframework.boot').version('2.6.7')
-    id('com.diffplug.spotless').version('6.5.0')
+    id('org.springframework.boot').version('2.7.2')
+    id('com.diffplug.spotless').version('6.8.0')
 }
 
+apply from: "${rootDir}/gradle/common-dependencies/build.gradle"
 dependencies {
     implementation('org.springframework.boot:spring-boot-starter-batch:2.7.2')
     implementation(project(':common'))

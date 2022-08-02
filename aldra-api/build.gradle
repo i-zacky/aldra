@@ -1,19 +1,20 @@
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
-    id('org.springframework.boot').version('2.6.7')
-    id('com.diffplug.spotless').version('6.5.0')
-    id('org.openapi.generator').version('5.4.0')
+    id('org.springframework.boot').version('2.7.2')
+    id('com.diffplug.spotless').version('6.8.0')
+    id('org.openapi.generator').version('6.0.1')
 }
 
+apply from: "${rootDir}/gradle/common-dependencies/build.gradle"
 dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web:2.7.2')
     implementation('org.springframework.boot:spring-boot-starter-actuator:2.7.2')
     implementation('org.springframework.boot:spring-boot-starter-security:2.7.2')
     implementation('org.springframework:spring-tx:5.3.22')
-    // FIXME remove below dependencies
-    // https://github.com/OpenAPITools/openapi-generator/issues/8719#issuecomment-806049990
-    implementation('org.springdoc:springdoc-openapi-ui:1.6.9')
+    implementation('io.swagger.core.v3:swagger-annotations:2.2.2')
+    // FIXME https://github.com/OpenAPITools/openapi-generator/issues/12603
+    implementation('jakarta.validation:jakarta.validation-api:2.0.2')
     implementation('com.amazonaws:aws-java-sdk-cognitoidp:1.12.272')
     implementation('com.auth0:java-jwt:4.0.0')
     implementation('com.auth0:jwks-rsa:0.21.1')

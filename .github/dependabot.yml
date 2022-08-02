@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: gradle
-    directory: /
+    directory: /gradle/common-dependencies
     schedule:
       interval: weekly
       time: '09:00'
@@ -12,7 +12,7 @@ updates:
       prefix-development: chore
       include: scope
   - package-ecosystem: gradle
-    directory: /aldra-api/
+    directory: /aldra-api
     schedule:
       interval: weekly
       time: '09:00'
@@ -23,7 +23,7 @@ updates:
       prefix-development: chore
       include: scope
   - package-ecosystem: gradle
-    directory: /aldra-batch/
+    directory: /aldra-batch
     schedule:
       interval: weekly
       time: '09:00'
@@ -34,7 +34,7 @@ updates:
       prefix-development: chore
       include: scope
   - package-ecosystem: gradle
-    directory: /aldra-common/
+    directory: /aldra-common
     schedule:
       interval: weekly
       time: '09:00'
@@ -45,7 +45,7 @@ updates:
       prefix-development: chore
       include: scope
   - package-ecosystem: gradle
-    directory: /aldra-database/
+    directory: /aldra-database
     schedule:
       interval: weekly
       time: '09:00'
