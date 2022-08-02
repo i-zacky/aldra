@@ -14,7 +14,7 @@ dependencies {
     implementation('org.springframework:spring-tx:5.3.22')
     implementation('io.swagger.core.v3:swagger-annotations:2.2.2')
     // FIXME https://github.com/OpenAPITools/openapi-generator/issues/12603
-    implementation('jakarta.validation:jakarta.validation-api:2.0.2')
+    implementation('jakarta.validation:jakarta.validation-api:3.0.2')
     implementation(project(':common'))
     implementation(project(':database'))
 }
