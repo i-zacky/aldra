@@ -5,7 +5,7 @@ plugins {
 
 apply from: "${rootDir}/gradle/common-dependencies/build.gradle"
 dependencies {
-    implementation('org.springframework.boot:spring-boot-starter-batch:2.7.3')
+    implementation('org.springframework.boot:spring-boot-starter-batch:3.0.0')
     implementation(project(':common'))
     implementation(project(':database'))
 }
