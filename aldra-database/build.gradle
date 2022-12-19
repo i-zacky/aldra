@@ -10,7 +10,7 @@ configurations {
 apply from: "${rootDir}/gradle/common-dependencies/build.gradle"
 dependencies {
     implementation('org.postgresql:postgresql:42.5.0')
-    implementation('org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2')
+    implementation('org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.1')
 
     mbGenerate('org.postgresql:postgresql:42.4.1')
     mbGenerate('org.mybatis.generator:mybatis-generator-core:1.4.1')
