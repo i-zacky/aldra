@@ -6,7 +6,7 @@ apply from: "${rootDir}/gradle/common-dependencies/build.gradle"
 dependencies {
     implementation('org.springframework.boot:spring-boot-configuration-processor:2.7.3')
     implementation('org.springframework.boot:spring-boot-autoconfigure:2.7.3')
-    implementation('org.springframework.boot:spring-boot-starter-logging:2.7.3')
+    implementation('org.springframework.boot:spring-boot-starter-logging:3.0.2')
 }
 
 spotless {
