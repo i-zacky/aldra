@@ -13,7 +13,7 @@ dependencies {
     implementation('org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2')
 
     mbGenerate('org.postgresql:postgresql:42.4.1')
-    mbGenerate('org.mybatis.generator:mybatis-generator-core:1.4.1')
+    mbGenerate('org.mybatis.generator:mybatis-generator-core:1.4.2')
 }
 
 sourceSets {
